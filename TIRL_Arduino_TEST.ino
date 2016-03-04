@@ -12,7 +12,7 @@ float wheel_dia=63; //    # mm (increase = spiral out)
 float wheel_base=113; //    # mm (increase = spiral in, ccw) 
 //int steps_rev=128; //        # 512 for 64x gearbox, 128 for 16x gearbox
 int steps_rev=512;
-int delay_time=6; //         # time between steps in ms
+int delay_time=2; //         # time between steps in ms
 
 // Stepper sequence org->pink->blue->yel
 int L_stepper_pins[] = {12, 10, 9, 11};
