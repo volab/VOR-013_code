@@ -1,4 +1,7 @@
 // 
+// add bp and led to start
+// majorLee 5/3
+
 
 #include <Servo.h>
 
@@ -9,11 +12,13 @@ int PEN_UP = 80;   // angle of servo when pen is up
 Servo penServo;
 
 float wheel_dia=63; //    # mm (increase = spiral out)
-float wheel_base=113; //    # mm (increase = spiral in, ccw) 
+float wheel_base=112; //    # mm (increase = spiral in, ccw) 
 //int steps_rev=128; //        # 512 for 64x gearbox, 128 for 16x gearbox
 int steps_rev=512;
 int delay_time=2; //         # time between steps in ms
 
+#define LED 3
+#define SWITCH 2
 // Stepper sequence org->pink->blue->yel
 int L_stepper_pins[] = {12, 10, 9, 11};
 int R_stepper_pins[] = {4, 6, 7, 5};
@@ -40,7 +45,8 @@ void setup() {
   }
   penServo.attach(servoPin);
   Serial.println("setup");
-  
+  pinMode( SWITCH, INPUT_PULLUP);
+  pinMode( LED, OUTPUT );
   penup();
   
   delay(1000);
@@ -48,6 +54,11 @@ void setup() {
 
 
 void loop(){ // draw a calibration box 4 times
+  while( digitalRead( SWITCH )){
+    digitalWrite( LED, !digitalRead(LED));
+    delay(200);
+  }
+  digitalWrite( LED, LOW );
   pendown();
   for(int x=0; x<12; x++){
     forward(100);
