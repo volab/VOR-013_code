@@ -32,6 +32,15 @@ int rev_mask[][4] =  {{1, 0, 0, 1},
                       {0, 1, 0, 1},
                       {0, 1, 1, 0},
                       {1, 0, 1, 0}};
+//
+enum{ PD, PU, FW, TR, TL };
+
+int figure[][2]={ {FW,50}, {TL,60},
+                  {FW,50}, {TL,60},
+                  {FW,50}, {TL,60},
+                  {FW,50}, {TL,60},
+                  {FW,50}, {TL,60},
+                  {FW,50}, {TL,60} };                  
 
 
 void setup() {
@@ -48,7 +57,7 @@ void setup() {
   pinMode( SWITCH, INPUT_PULLUP);
   pinMode( LED, OUTPUT );
   penup();
-  
+  Serial.print("Taille de figure = "); Serial.println( sizeof(figure) / sizeof( *figure ) );
   delay(1000);
 }
 
@@ -60,15 +69,36 @@ void loop(){ // draw a calibration box 4 times
   }
   digitalWrite( LED, LOW );
   pendown();
-  for(int x=0; x<12; x++){
-    forward(100);
-    left(90);
+  int nbrCmd = sizeof(figure) / sizeof( *figure );
+  for(int x=0; x< nbrCmd; x++){
+    trace( figure[x][0], figure[x][1]);
   }
   penup();
   done();      // releases stepper motor
   while(1);    // wait for reset
 }
 
+void trace(int cmd, int param){
+  switch (cmd){
+    default: // PU:
+      penup();
+      break;
+    case PD:
+      pendown();
+      break;
+    case FW:
+      forward( (float) param );
+      break;
+    case TR:
+      right( (float) param );
+      break;    
+    case TL:
+      left( (float) param );
+      break;          
+  }
+
+    
+}
 
 // ----- HELPER FUNCTIONS -----------
 int step(float distance){
