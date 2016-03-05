@@ -60,9 +60,11 @@ void loop(){ // draw a calibration box 4 times
   }
   digitalWrite( LED, LOW );
   pendown();
-  for(int x=0; x<12; x++){
-    forward(100);
-    left(90);
+  for(int x=0; x<5; x++){
+    forward(44);
+    left(72);
+    forward(44);
+    right(144);
   }
   penup();
   done();      // releases stepper motor
