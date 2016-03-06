@@ -1,9 +1,12 @@
 // 
 // add bp and led to start
 // majorLee 5/3
+// Ajoute d'un tableau de lettres
 
 
 #include <Servo.h>
+#include "letters.h"
+#define TABLETTERMAXLIGN 25
 
 // setup servo
 int servoPin = 8;
@@ -33,7 +36,7 @@ int rev_mask[][4] =  {{1, 0, 0, 1},
                       {0, 1, 1, 0},
                       {1, 0, 1, 0}};
 //
-enum{ PD, PU, FW, TR, TL };
+
 
 int figure[][2]={ {FW,50}, {TL,60},
                   {FW,50}, {TL,60},
@@ -57,7 +60,6 @@ void setup() {
   pinMode( SWITCH, INPUT_PULLUP);
   pinMode( LED, OUTPUT );
   penup();
-  Serial.print("Taille de figure = "); Serial.println( sizeof(figure) / sizeof( *figure ) );
   delay(1000);
 }
 
@@ -68,17 +70,17 @@ void loop(){ // draw a calibration box 4 times
     delay(200);
   }
   digitalWrite( LED, LOW );
-  pendown();
-  int nbrCmd = sizeof(figure) / sizeof( *figure );
-  for(int x=0; x< nbrCmd; x++){
-    trace( figure[x][0], figure[x][1]);
-  }
-  penup();
+
+  traceLetter('A');
+
   done();      // releases stepper motor
   while(1);    // wait for reset
 }
 
+// ----- TRACER FUNCTIONS -----------
 void trace(int cmd, int param){
+  Serial.print("cmd = ");Serial.print( cmd );
+  Serial.print(" / ");Serial.println( param );
   switch (cmd){
     default: // PU:
       penup();
@@ -96,10 +98,21 @@ void trace(int cmd, int param){
       left( (float) param );
       break;          
   }
-
-    
 }
 
+void traceLetter(char c){
+  int *letterTable;
+  int nbrCmd;
+  switch (c){
+    case 'A':
+      letterTable = &letter_A[0][0];
+      nbrCmd = sizeof(letter_A) / sizeof( *letter_A );
+      break;
+  }
+  for(int x=0; x< nbrCmd; x++){
+    trace( *(letterTable+x*2), *(letterTable+x*2+1));
+  }
+}
 // ----- HELPER FUNCTIONS -----------
 int step(float distance){
   int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
@@ -118,7 +131,7 @@ int step(float distance){
 
 void forward(float distance){
   int steps = step(distance);
-  Serial.println(steps);
+  //Serial.print("forward : ");Serial.println(distance);
   for(int step=0; step<steps; step++){
     for(int mask=0; mask<4; mask++){
       for(int pin=0; pin<4; pin++){
@@ -147,6 +160,7 @@ void backward(float distance){
 
 void right(float degrees){
   float rotation = degrees / 360.0;
+  //Serial.print("right : ");Serial.println(degrees);
   float distance = wheel_base * 3.1412 * rotation;
   int steps = step(distance);
   for(int step=0; step<steps; step++){
@@ -163,6 +177,7 @@ void right(float degrees){
 
 void left(float degrees){
   float rotation = degrees / 360.0;
+  //Serial.print("left : ");Serial.println(degrees);
   float distance = wheel_base * 3.1412 * rotation;
   int steps = step(distance);
   for(int step=0; step<steps; step++){
@@ -190,7 +205,7 @@ void done(){ // unlock stepper to save battery
 
 void penup(){
   delay(250);
-  Serial.println("PEN_UP()");
+  //Serial.println("PEN_UP()");
   penServo.write(PEN_UP);
   delay(250);
 }
@@ -198,7 +213,7 @@ void penup(){
 
 void pendown(){
   delay(250);  
-  Serial.println("PEN_DOWN()");
+  //Serial.println("PEN_DOWN()");
   penServo.write(PEN_DOWN);
   delay(250);
 }
