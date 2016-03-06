@@ -63,6 +63,7 @@ void setup() {
   delay(1000);
 }
 
+String aEcrire="ABE";
 
 void loop(){ // draw a calibration box 4 times
   while( digitalRead( SWITCH )){
@@ -70,9 +71,14 @@ void loop(){ // draw a calibration box 4 times
     delay(200);
   }
   digitalWrite( LED, LOW );
+  delay(1000);
+  for (int i = 0; i< aEcrire.length(); i++){
+    Serial.println(  aEcrire.charAt(i) );
+    traceLetter( aEcrire.charAt(i) );
+  }
+  
 
-  traceLetter('A');
-
+  
   done();      // releases stepper motor
   while(1);    // wait for reset
 }
@@ -107,6 +113,14 @@ void traceLetter(char c){
     case 'A':
       letterTable = &letter_A[0][0];
       nbrCmd = sizeof(letter_A) / sizeof( *letter_A );
+      break;
+    case 'B':
+      letterTable = &letter_B[0][0];
+      nbrCmd = sizeof(letter_B) / sizeof( *letter_B );
+      break;
+    case 'E':
+      letterTable = &letter_E[0][0];
+      nbrCmd = sizeof(letter_E) / sizeof( *letter_E );
       break;
   }
   for(int x=0; x< nbrCmd; x++){
