@@ -63,7 +63,7 @@ void setup() {
   delay(1000);
 }
 
-String aEcrire="ABE";
+String aEcrire="ABCE";
 
 void loop(){ // draw a calibration box 4 times
   while( digitalRead( SWITCH )){
@@ -107,7 +107,7 @@ void trace(int cmd, int param){
 }
 
 void traceLetter(char c){
-  int *letterTable;
+  byte *letterTable;
   int nbrCmd;
   switch (c){
     case 'A':
@@ -117,6 +117,10 @@ void traceLetter(char c){
     case 'B':
       letterTable = &letter_B[0][0];
       nbrCmd = sizeof(letter_B) / sizeof( *letter_B );
+      break;
+    case 'C':
+      letterTable = &letter_C[0][0];
+      nbrCmd = sizeof(letter_C) / sizeof( *letter_C );
       break;
     case 'E':
       letterTable = &letter_E[0][0];
