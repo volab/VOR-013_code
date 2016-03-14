@@ -56,14 +56,14 @@ void setup() {
     digitalWrite(R_stepper_pins[pin], LOW);
   }
   penServo.attach(servoPin);
-  Serial.println("setup");
+  Serial.println(F("setup"));
   pinMode( SWITCH, INPUT_PULLUP);
   pinMode( LED, OUTPUT );
   penup();
   delay(1000);
 }
 
-String aEcrire="ABCE";
+String aEcrire="TU";
 
 void loop(){ // draw a calibration box 4 times
   while( digitalRead( SWITCH )){
@@ -85,8 +85,9 @@ void loop(){ // draw a calibration box 4 times
 
 // ----- TRACER FUNCTIONS -----------
 void trace(int cmd, int param){
-  Serial.print("cmd = ");Serial.print( cmd );
+  Serial.print(F("cmd = "));Serial.print( cmd );
   Serial.print(" / ");Serial.println( param );
+  static int offsetRcpt = 0;
   switch (cmd){
     default: // PU:
       penup();
@@ -98,6 +99,14 @@ void trace(int cmd, int param){
       forward( (float) param );
       break;
     case TR:
+      //correction déviation droite
+      offsetRcpt += param;
+      Serial.print(F("TR cumul : ")); Serial.println( offsetRcpt );
+      if (offsetRcpt >= 180 ){
+        offsetRcpt = 0;
+        param +=2;
+        Serial.print(F("Param corrige : ")); Serial.println( param );
+      }
       right( (float) param );
       break;    
     case TL:
@@ -122,11 +131,100 @@ void traceLetter(char c){
       letterTable = &letter_C[0][0];
       nbrCmd = sizeof(letter_C) / sizeof( *letter_C );
       break;
+    case 'D':
+      letterTable = &letter_D[0][0];
+      nbrCmd = sizeof(letter_D) / sizeof( *letter_D );
+      break;
     case 'E':
       letterTable = &letter_E[0][0];
       nbrCmd = sizeof(letter_E) / sizeof( *letter_E );
       break;
+    case 'F':
+      letterTable = &letter_F[0][0];
+      nbrCmd = sizeof(letter_F) / sizeof( *letter_F );
+      break;
+    case 'G':
+      letterTable = &letter_G[0][0];
+      nbrCmd = sizeof(letter_G) / sizeof( *letter_G );
+      break;
+    case 'H':
+      letterTable = &letter_H[0][0];
+      nbrCmd = sizeof(letter_H) / sizeof( *letter_H );
+      break;
+    case 'I':
+      letterTable = &letter_I[0][0];
+      nbrCmd = sizeof(letter_I) / sizeof( *letter_I );
+      break;
+    case 'J':
+      letterTable = &letter_J[0][0];
+      nbrCmd = sizeof(letter_J) / sizeof( *letter_J );
+      break;
+    case 'K':
+      letterTable = &letter_K[0][0];
+      nbrCmd = sizeof(letter_K) / sizeof( *letter_K );
+      break;
+    case 'L':
+      letterTable = &letter_L[0][0];
+      nbrCmd = sizeof(letter_L) / sizeof( *letter_L );
+      break;
+    case 'M':
+      letterTable = &letter_M[0][0];
+      nbrCmd = sizeof(letter_M) / sizeof( *letter_M );
+      break;
+    case 'N':
+      letterTable = &letter_N[0][0];
+      nbrCmd = sizeof(letter_N) / sizeof( *letter_N );
+      break;
+    case 'O':
+      letterTable = &letter_O[0][0];
+      nbrCmd = sizeof(letter_O) / sizeof( *letter_O );
+      break;
+    case 'P':
+      letterTable = &letter_P[0][0];
+      nbrCmd = sizeof(letter_P) / sizeof( *letter_P );
+      break;
+    case 'Q':
+      letterTable = &letter_Q[0][0];
+      nbrCmd = sizeof(letter_Q) / sizeof( *letter_Q );
+      break;
+    case 'R':
+      letterTable = &letter_R[0][0];
+      nbrCmd = sizeof(letter_R) / sizeof( *letter_R );
+      break;
+    case 'S':
+      letterTable = &letter_S[0][0];
+      nbrCmd = sizeof(letter_S) / sizeof( *letter_S );
+      break;
+    case 'T':
+      letterTable = &letter_T[0][0];
+      nbrCmd = sizeof(letter_T) / sizeof( *letter_T );
+      break;
+    case 'U':
+      letterTable = &letter_U[0][0];
+      nbrCmd = sizeof(letter_U) / sizeof( *letter_U );
+      break;
+    case 'V':
+      letterTable = &letter_V[0][0];
+      nbrCmd = sizeof(letter_V) / sizeof( *letter_V );
+      break;
+    case 'W':
+      letterTable = &letter_W[0][0];
+      nbrCmd = sizeof(letter_W) / sizeof( *letter_W );
+      break;
+    case 'X':
+      letterTable = &letter_X[0][0];
+      nbrCmd = sizeof(letter_X) / sizeof( *letter_X );
+      break;
+    case 'Y':
+      letterTable = &letter_Y[0][0];
+      nbrCmd = sizeof(letter_Y) / sizeof( *letter_Y );
+      break;
+    case 'Z':
+      letterTable = &letter_Z[0][0];
+      nbrCmd = sizeof(letter_Z) / sizeof( *letter_Z );
+      break;
   }
+  Serial.print(F("nb cme : "));Serial.println(nbrCmd);
   for(int x=0; x< nbrCmd; x++){
     trace( *(letterTable+x*2), *(letterTable+x*2+1));
   }
