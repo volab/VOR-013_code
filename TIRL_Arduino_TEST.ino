@@ -63,7 +63,7 @@ void setup() {
   delay(1000);
 }
 
-String aEcrire="TU";
+String aEcrire="VOLAB";
 
 void loop(){ // draw a calibration box 4 times
   while( digitalRead( SWITCH )){
