@@ -1,7 +1,7 @@
 // aplphabet definition
 
 enum{ PD, PU, FW, TR, TL };
-
+/*
 byte letter_A[][2]={
   {TR,17}, {PD,0}, {FW,42}, {TR,146},
   {FW,42}, {PU,0}, {TR,180}, {FW,12},
@@ -186,3 +186,4 @@ byte letter_Z[][2]={
 	{FW,47}, {TL,122}, {FW,25}, {PU,0}, {FW,5},
 	{TL,90}
 }; //11 cdes
+*/

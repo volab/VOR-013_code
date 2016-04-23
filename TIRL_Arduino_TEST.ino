@@ -7,9 +7,21 @@
 #include <Servo.h>
 #include "letters.h"
 #define TABLETTERMAXLIGN 25
+/*
+ ** MOSI - pin 11
+ ** MISO - pin 12
+ ** CLK - pin 13
+ ** CS - pin 10
+  */
+#include <SPI.h>
+#include <SD.h>
+
+File myFile;
+int nbrCommandes = 0;
+byte cmdBuffer[30][2];
 
 // setup servo
-int servoPin = 8;
+int servoPin = A0;
 int PEN_DOWN = 20; // angle of servo when pen is down
 int PEN_UP = 80;   // angle of servo when pen is up
 Servo penServo;
@@ -23,8 +35,9 @@ int delay_time=2; //         # time between steps in ms
 #define LED 3
 #define SWITCH 2
 // Stepper sequence org->pink->blue->yel
-int L_stepper_pins[] = {12, 10, 9, 11};
-int R_stepper_pins[] = {4, 6, 7, 5};
+//int L_stepper_pins[] = {12, 10, 9, 11};
+int L_stepper_pins[] = { A5, A3, A2, A4 };
+int R_stepper_pins[] = { 4, 6, 7, 5 };
 
 int fwd_mask[][4] =  {{1, 0, 1, 0},
                       {0, 1, 1, 0},
@@ -37,17 +50,26 @@ int rev_mask[][4] =  {{1, 0, 0, 1},
                       {1, 0, 1, 0}};
 //
 
-
+/*
 int figure[][2]={ {FW,50}, {TL,60},
                   {FW,50}, {TL,60},
                   {FW,50}, {TL,60},
                   {FW,50}, {TL,60},
                   {FW,50}, {TL,60},
                   {FW,50}, {TL,60} };                  
+*/
 
-
+int fromEnumCommande( String commande){
+  if (commande == "PD") return PD;
+  if (commande == "PU") return PU;
+  if (commande == "FW") return FW;
+  if (commande == "TR") return TR;
+  if (commande == "TL") return TL;  
+}
 void setup() {
   randomSeed(analogRead(1)); 
+  String fileName = "letters/A.txt";
+  String lettre = "";
   Serial.begin(9600);
   for(int pin=0; pin<4; pin++){
     pinMode(L_stepper_pins[pin], OUTPUT);
@@ -55,11 +77,49 @@ void setup() {
     pinMode(R_stepper_pins[pin], OUTPUT);
     digitalWrite(R_stepper_pins[pin], LOW);
   }
+  penServo.write(PEN_UP);
   penServo.attach(servoPin);
   Serial.println(F("setup"));
   pinMode( SWITCH, INPUT_PULLUP);
   pinMode( LED, OUTPUT );
-  penup();
+  //penup();
+  if (!SD.begin(10)) {
+    Serial.println("initialization failed!");
+    return;
+    while (1){
+      digitalWrite( LED, !digitalRead(LED));
+      delay(200);
+    }
+  }
+  // debut debug function read lettre 
+  myFile = SD.open(fileName, FILE_READ);
+  byte octetlu;
+  while (myFile.available()) {
+      octetlu = myFile.read();
+      lettre.concat((char)octetlu);
+      //Serial.println(octetlu);
+  }
+  myFile.close();
+  Serial.println( lettre ) ;
+  int offset1 = 0;
+  int offset2 = 0;
+  int pos1 = lettre.indexOf('{', offset1);
+  nbrCommandes = 0;
+  while (pos1 != -1){
+    int pos2 = lettre.indexOf('}', offset2);
+    String sousChaine = lettre.substring(pos1+1, pos2);
+    Serial.println( sousChaine );
+    offset1 = pos1+2;
+    offset2 = pos2+1;
+    String commande = sousChaine.substring(0, sousChaine.indexOf(','));
+    Serial.print("Commande : "); Serial.println( commande );
+    //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
+    cmdBuffer[nbrCommandes][0] = fromEnumCommande(commande);
+    pos1 = lettre.indexOf('{', offset1);
+    nbrCommandes += 1 ;
+  }
+  Serial.print("Nombre de commande = "); Serial.println(nbrCommandes);
+  Serial.println("fin_2020");
   delay(1000);
 }
 
@@ -74,7 +134,7 @@ void loop(){ // draw a calibration box 4 times
   delay(1000);
   for (int i = 0; i< aEcrire.length(); i++){
     Serial.println(  aEcrire.charAt(i) );
-    traceLetter( aEcrire.charAt(i) );
+//    traceLetter( aEcrire.charAt(i) );
   }
   
 
@@ -84,6 +144,7 @@ void loop(){ // draw a calibration box 4 times
 }
 
 // ----- TRACER FUNCTIONS -----------
+/*
 void trace(int cmd, int param){
   Serial.print(F("cmd = "));Serial.print( cmd );
   Serial.print(" / ");Serial.println( param );
@@ -229,6 +290,7 @@ void traceLetter(char c){
     trace( *(letterTable+x*2), *(letterTable+x*2+1));
   }
 }
+*/
 // ----- HELPER FUNCTIONS -----------
 int step(float distance){
   int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
