@@ -2,6 +2,7 @@
 // add bp and led to start
 // majorLee 5/3
 // Ajoute d'un tableau de lettres
+// 06/07/2016 exploration changement de broche L_stepper
 
 
 #include <Servo.h>
@@ -23,7 +24,8 @@ int delay_time=2; //         # time between steps in ms
 #define LED 3
 #define SWITCH 2
 // Stepper sequence org->pink->blue->yel
-int L_stepper_pins[] = {12, 10, 9, 11};
+//int L_stepper_pins[] = {12, 10, 9, 11};
+int L_stepper_pins[] = {A5, A3, A2, A4};
 int R_stepper_pins[] = {4, 6, 7, 5};
 
 int fwd_mask[][4] =  {{1, 0, 1, 0},
