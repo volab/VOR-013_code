@@ -22,9 +22,10 @@
 */
 #include <SPI.h>
 #include <SD.h>
+#include "Tracer.h"
 #include "Lettres.h"
 
-
+Tracer tracer;
 
 //File myFile;
 int nbrCommandes = 0;
