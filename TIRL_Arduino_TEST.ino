@@ -92,7 +92,9 @@ void setup() {
     }
     penServo.write(PEN_UP);
     penServo.attach(servoPin);
-    Serial.println(F("setup"));
+    //sp(F("setup : "));sp(__DATE__); spl(__TIME__);
+    spl("setup : " __DATE__ " @ " __TIME__);
+    
     //sp("file name : ");spl( fileNameConstructor ('a'));
     pinMode( SWITCH, INPUT_PULLUP);
     pinMode( LED, OUTPUT );
@@ -108,7 +110,7 @@ void setup() {
             delay(200);
         }
     }
-    Lettres maLettre = Lettres( 'a' );
+    Lettres( 'a' );
     
     Serial.println("fin_2020");
     delay(1000);

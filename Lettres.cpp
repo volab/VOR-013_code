@@ -6,7 +6,10 @@ Lettres::Lettres( char c ){
 }
 
 void Lettres::traceLettre(){
-    sp("Trace lettre : "); spl(_carac);
+    sp(F("Trace lettre : ")); spl(_carac);
+    readLettre();
+    sp(F("nbr cmd = "));spl(_nbrCommandes);
+    //spl("nbr cmd = " String(_nbrCommandes) );
 }
 
 
@@ -67,15 +70,15 @@ int Lettres::readLettre(){
         // recherche de la sous-chaine commande
         int posVirgule = sousChaine.indexOf(',');
         String commande = sousChaine.substring(0, posVirgule );
-        sp("Commande : "); sp( commande );
+        sp(F("Commande : ")); sp( commande );
         //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
         _bufferCommandes[_nbrCommandes][0] = fromEnumCommande(commande);
         byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
-        sp(" - Parametre = ");spl(parametre);
+        sp(F(" - Parametre = "));spl(parametre);
         _bufferCommandes[_nbrCommandes][1] = parametre;
         pos1 = lettre.indexOf('{', offset1);
         _nbrCommandes += 1 ;
     }
-    Serial.print("Nombre de commande = "); Serial.println(_nbrCommandes);
+   //Serial.print("Nombre de commande = "); Serial.println(_nbrCommandes);
     return _nbrCommandes;
 }
