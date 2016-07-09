@@ -6,6 +6,8 @@
 #define sp(X) Serial.print(X)
 #define spl(X) Serial.println(X)
 
+#define NBRCMDMAX 30
+
 //global enum
 enum{ PD, PU, FW, TR, TL };
 
@@ -18,12 +20,13 @@ class Lettres{
     private:
     char _carac;
     int _nbrCommandes ;
-    byte _bufferCommandes[30][2];
+    byte _bufferCommandes[NBRCMDMAX][2];
     int readLettre();
     File _myFile;
     String fileNameConstructor( );
     int fromEnumCommande( String commande);
     void traceLettre();
+    void printBufferCmd();
 };
 
 #endif

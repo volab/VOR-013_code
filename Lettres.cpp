@@ -10,8 +10,16 @@ void Lettres::traceLettre(){
     readLettre();
     sp(F("nbr cmd = "));spl(_nbrCommandes);
     //spl("nbr cmd = " String(_nbrCommandes) );
+    printBufferCmd();
 }
 
+
+void Lettres::printBufferCmd(){
+    for (int i = 0; i< _nbrCommandes; i++){
+        sp( "cmd : ");sp( _bufferCommandes[i][0] );
+        sp( ", ");spl(_bufferCommandes[i][1]);
+    }
+}
 
 int Lettres::fromEnumCommande( String commande){
     if (commande == "PD") return PD;
@@ -59,7 +67,7 @@ int Lettres::readLettre(){
     int offset2 = 0;
     int pos1 = lettre.indexOf('{', offset1);
     _nbrCommandes = 0;
-    while (pos1 != -1){
+    while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
         //lettre est conserve intacte
         //parcours de lettre avec offset1 et 2
         int pos2 = lettre.indexOf('}', offset2);
@@ -79,6 +87,8 @@ int Lettres::readLettre(){
         pos1 = lettre.indexOf('{', offset1);
         _nbrCommandes += 1 ;
     }
+    
    //Serial.print("Nombre de commande = "); Serial.println(_nbrCommandes);
-    return _nbrCommandes;
+    if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
+    else return 0;
 }
