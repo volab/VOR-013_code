@@ -25,7 +25,7 @@
 #include "Tracer.h"
 #include "Lettres.h"
 
-Tracer tracer;
+//Tracer tracer;
 
 //File myFile;
 int nbrCommandes = 0;
@@ -34,14 +34,14 @@ byte cmdBuffer[30][2];
 // setup servo
 //int servoPin = A0;
 int servoPin = 8;
-int PEN_DOWN = 20; // angle of servo when pen is down
-int PEN_UP = 80;   // angle of servo when pen is up
-Servo penServo;
+//int PEN_DOWN = 20; // angle of servo when pen is down
+//int PEN_UP = 80;   // angle of servo when pen is up
 
-float wheel_dia=63; //    # mm (increase = spiral out)
-float wheel_base=112; //    # mm (increase = spiral in, ccw) 
+
+//float wheel_dia=63; //    # mm (increase = spiral out)
+//float wheel_base=112; //    # mm (increase = spiral in, ccw) 
 //int steps_rev=128; //        # 512 for 64x gearbox, 128 for 16x gearbox
-int steps_rev=512;
+//int steps_rev=512;
 int delay_time=2; //         # time between steps in ms
 
 #define LED 3
@@ -91,8 +91,7 @@ void setup() {
         pinMode(R_stepper_pins[pin], OUTPUT);
         digitalWrite(R_stepper_pins[pin], LOW);
     }
-    penServo.write(PEN_UP);
-    penServo.attach(servoPin);
+
     //sp(F("setup : "));sp(__DATE__); spl(__TIME__);
     spl("setup : " __DATE__ " @ " __TIME__);
     
@@ -287,7 +286,8 @@ for(int x=0; x< nbrCmd; x++){
 */
 // ----- HELPER FUNCTIONS -----------
 int step(float distance){
-    int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
+    //int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
+    int steps = distance * STEPREV / (WHEELDIA * 3.1412); //24.61
     /*
 Serial.print(distance);
 Serial.print(" ");
@@ -333,7 +333,8 @@ void backward(float distance){
 void right(float degrees){
     float rotation = degrees / 360.0;
     //Serial.print("right : ");Serial.println(degrees);
-    float distance = wheel_base * 3.1412 * rotation;
+    // float distance = wheel_base * 3.1412 * rotation;
+    float distance = WHEELBASE * 3.1412 * rotation;
     int steps = step(distance);
     for(int step=0; step<steps; step++){
         for(int mask=0; mask<4; mask++){
@@ -350,7 +351,8 @@ void right(float degrees){
 void left(float degrees){
     float rotation = degrees / 360.0;
     //Serial.print("left : ");Serial.println(degrees);
-    float distance = wheel_base * 3.1412 * rotation;
+    //float distance = wheel_base * 3.1412 * rotation;
+    float distance = WHEELBASE * 3.1412 * rotation;
     int steps = step(distance);
     for(int step=0; step<steps; step++){
         for(int mask=0; mask<4; mask++){
@@ -375,18 +377,7 @@ void done(){ // unlock stepper to save battery
 }
 
 
-void penup(){
-    delay(250);
-    //Serial.println("PEN_UP()");
-    penServo.write(PEN_UP);
-    delay(250);
-}
 
 
-void pendown(){
-    delay(250);  
-    //Serial.println("PEN_DOWN()");
-    penServo.write(PEN_DOWN);
-    delay(250);
-}
+
 
