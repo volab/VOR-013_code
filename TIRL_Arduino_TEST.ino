@@ -108,7 +108,7 @@ void setup() {
             delay(200);
         }
     }
-    
+    Lettres maLettre = Lettres( 'a' );
     
     Serial.println("fin_2020");
     delay(1000);

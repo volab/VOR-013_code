@@ -10,7 +10,8 @@
 enum{ PD, PU, FW, TR, TL };
 
 class Lettres{
- 
+    public:
+    Lettres( char c );
 
 
  
@@ -22,6 +23,7 @@ class Lettres{
     File _myFile;
     String fileNameConstructor( );
     int fromEnumCommande( String commande);
+    void traceLettre();
 };
 
 #endif

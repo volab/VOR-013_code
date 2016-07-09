@@ -1,5 +1,14 @@
 #include "Lettres.h"
 
+Lettres::Lettres( char c ){
+    _carac = toupper (c);
+    traceLettre();
+}
+
+void Lettres::traceLettre(){
+    sp("Trace lettre : "); spl(_carac);
+}
+
 
 int Lettres::fromEnumCommande( String commande){
     if (commande == "PD") return PD;
@@ -11,7 +20,7 @@ int Lettres::fromEnumCommande( String commande){
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// fonction : filenameContructor
+// methode : filenameContructor
 // cree le nom de fichier pour acceder a la lettre
 // le lettre est convertie en majuscules
 // pas de verification !
@@ -22,7 +31,7 @@ String Lettres::fileNameConstructor( ){
 
 
 //----------------------------------------------------------------------------------------------------------------------
-// Fonction readLetter
+// methode readLetter
 // in:
 //  char lettre
 // out:
