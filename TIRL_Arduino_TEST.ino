@@ -77,11 +77,30 @@ int fromEnumCommande( String commande){
     if (commande == "TR") return TR;
     if (commande == "TL") return TL;  
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+// fonction : filenameContructor
+// cree le nom de fichier pour accéder à la lettre
+// le lettre est convertie en majuscules
+// pas de vérification !
+String fileNameConstructor( char lettre ){
+    lettre = toupper( lettre );
+    return String("letters/")+lettre+String(".txt");
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+// Fonction readLetter
+// in:
+// 
+
 void setup() {
-    randomSeed(analogRead(1)); 
-    String fileName = "letters/A.txt";
-    String lettre = "";
     Serial.begin(9600);
+    randomSeed(analogRead(1)); 
+    String fileName = fileNameConstructor( 'a' );
+    
+    String lettre = "";
+    
     for(int pin=0; pin<4; pin++){
         pinMode(L_stepper_pins[pin], OUTPUT);
         digitalWrite(L_stepper_pins[pin], LOW);
@@ -91,6 +110,7 @@ void setup() {
     penServo.write(PEN_UP);
     penServo.attach(servoPin);
     Serial.println(F("setup"));
+    sp("file name : ");spl( fileNameConstructor ('a'));
     pinMode( SWITCH, INPUT_PULLUP);
     pinMode( LED, OUTPUT );
     //penup();
