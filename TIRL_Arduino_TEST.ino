@@ -7,7 +7,7 @@
 
 
 #include <Servo.h>
-#include "letters.h"
+//#include "letters.h"
 #define TABLETTERMAXLIGN 25
 /*
 ** MOSI - pin 11
@@ -22,11 +22,11 @@
 */
 #include <SPI.h>
 #include <SD.h>
+#include "Lettres.h"
 
-#define sp(X) Serial.print(X)
-#define spl(X) Serial.println(X)
 
-File myFile;
+
+//File myFile;
 int nbrCommandes = 0;
 byte cmdBuffer[30][2];
 
@@ -70,37 +70,20 @@ int figure[][2]={ {FW,50}, {TL,60},
                 {FW,50}, {TL,60} };                  
 */
 
-int fromEnumCommande( String commande){
-    if (commande == "PD") return PD;
-    if (commande == "PU") return PU;
-    if (commande == "FW") return FW;
-    if (commande == "TR") return TR;
-    if (commande == "TL") return TL;  
+
+
+
+
+/*
+int readLettre( char caractere ){
+
 }
+*/
 
-//----------------------------------------------------------------------------------------------------------------------
-// fonction : filenameContructor
-// cree le nom de fichier pour accéder à la lettre
-// le lettre est convertie en majuscules
-// pas de vérification !
-String fileNameConstructor( char lettre ){
-    lettre = toupper( lettre );
-    return String("letters/")+lettre+String(".txt");
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-// Fonction readLetter
-// in:
-// 
 
 void setup() {
     Serial.begin(9600);
-    randomSeed(analogRead(1)); 
-    String fileName = fileNameConstructor( 'a' );
-    
-    String lettre = "";
-    
+    randomSeed(analogRead(1));  
     for(int pin=0; pin<4; pin++){
         pinMode(L_stepper_pins[pin], OUTPUT);
         digitalWrite(L_stepper_pins[pin], LOW);
@@ -110,7 +93,7 @@ void setup() {
     penServo.write(PEN_UP);
     penServo.attach(servoPin);
     Serial.println(F("setup"));
-    sp("file name : ");spl( fileNameConstructor ('a'));
+    //sp("file name : ");spl( fileNameConstructor ('a'));
     pinMode( SWITCH, INPUT_PULLUP);
     pinMode( LED, OUTPUT );
     //penup();
@@ -126,42 +109,7 @@ void setup() {
         }
     }
     
-    //--------------------------------------------------------------------------
-    // debut debug function read lettre et surtout conversion ASCII to enum
-    myFile = SD.open(fileName, FILE_READ);
-    byte octetlu;
-    while (myFile.available()) {
-        octetlu = myFile.read();
-        lettre.concat((char)octetlu);
-        //Serial.println(octetlu);
-    }
-    myFile.close();
-    Serial.println( lettre ) ;
-    int offset1 = 0;
-    int offset2 = 0;
-    int pos1 = lettre.indexOf('{', offset1);
-    nbrCommandes = 0;
-    while (pos1 != -1){
-        //lettre est conserve intacte
-        //parcours de lettre avec offset1 et 2
-        int pos2 = lettre.indexOf('}', offset2);
-        String sousChaine = lettre.substring(pos1+1, pos2);
-        spl( sousChaine );
-        offset1 = pos1+2;
-        offset2 = pos2+1;
-        // recherche de la sous-chaine commande
-        int posVirgule = sousChaine.indexOf(',');
-        String commande = sousChaine.substring(0, posVirgule );
-        sp("Commande : "); sp( commande );
-        //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
-        cmdBuffer[nbrCommandes][0] = fromEnumCommande(commande);
-        byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
-        sp(" - Parametre = ");spl(parametre);
-        cmdBuffer[nbrCommandes][1] = parametre;
-        pos1 = lettre.indexOf('{', offset1);
-        nbrCommandes += 1 ;
-    }
-    Serial.print("Nombre de commande = "); Serial.println(nbrCommandes);
+    
     Serial.println("fin_2020");
     delay(1000);
 }
