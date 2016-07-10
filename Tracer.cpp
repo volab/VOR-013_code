@@ -1,3 +1,10 @@
+//----------------------------------------------------------------------------------------------------------------------
+// myTracer pré-instancié en fin de fichier.
+// Joel - MajorLee- Soranzo
+// le 10/07/2016
+// VoLAB by VoRoBoTics
+//----------------------------------------------------------------------------------------------------------------------
+// class pour robot de desin, source thingiverse
 
 
 #include "Tracer.h"
@@ -26,25 +33,33 @@ Tracer::Tracer():
         pinMode(_R_stepperPins[pin], OUTPUT);
         digitalWrite(_R_stepperPins[pin], LOW);
     }
+    penup();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 void Tracer::tracerDebug(){
-    
+#ifdef DEBUG
+    spl("into the tracer class");
+    for (int i = 0; i < 4; i++){
+        dsp( "L_stepper_pin"); dsp(i);dsp(" = ");dspl(_L_stepperPins[i]);
+    }
+    for (int i = 0; i < 4; i++){
+        dsp( "R_stepper_pin"); dsp(i);dsp(" = ");dspl(_R_stepperPins[i]);
+    }
+    dsp("steps for 10 mm = ");dspl( step(10));
+#endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 void Tracer::penup(){
     delay(250);
-    //Serial.println("PEN_UP()");
     _penServo.write(PENUP);
     delay(250);
 }
 
 void Tracer::pendown(){
     delay(250);  
-    //Serial.println("PEN_DOWN()");
     _penServo.write(PENDOWN);
     delay(250);
 }
@@ -171,4 +186,4 @@ void Tracer::trace(int cmd, int param){
     }
 }
 
-
+Tracer mytracer;

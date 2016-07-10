@@ -13,8 +13,8 @@
 #define dsp(X) sp(X)
 #define dspl(X) spl(X)
 #else
-#define dsp(X) sp(X)
-#define dspl(X) spl(X)
+#define dsp(X)
+#define dspl(X)
 #endif
 
 #endif

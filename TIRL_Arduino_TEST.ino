@@ -4,6 +4,7 @@
 // Ajoute d'un tableau de lettres
 // Changement de broche du L_stepper validé 8/7/16
 // reprise intégration SD carte
+// Programmation orientée objet
 
 
 #include <Servo.h>
@@ -28,12 +29,12 @@
 //Tracer tracer;
 
 //File myFile;
-int nbrCommandes = 0;
-byte cmdBuffer[30][2];
+// int nbrCommandes = 0;
+// byte cmdBuffer[30][2];
 
 // setup servo
 //int servoPin = A0;
-int servoPin = 8;
+//int servoPin = 8;
 //int PEN_DOWN = 20; // angle of servo when pen is down
 //int PEN_UP = 80;   // angle of servo when pen is up
 
@@ -48,8 +49,8 @@ int servoPin = 8;
 #define SWITCH 2
 // Stepper sequence org->pink->blue->yel
 //int L_stepper_pins[] = {12, 10, 9, 11};
-int L_stepper_pins[] = { A5, A3, A2, A4 };
-int R_stepper_pins[] = { 4, 6, 7, 5 };
+//int L_stepper_pins[] = { A5, A3, A2, A4 };
+//int R_stepper_pins[] = { 4, 6, 7, 5 };
 
 
 
@@ -75,16 +76,13 @@ int readLettre( char caractere ){
 }
 */
 
-
+//----------------------------------------------------------------------------------------------------------------------
 void setup() {
     Serial.begin(9600);
     randomSeed(analogRead(1));  
 
+    dspl("setup : " __DATE__ " @ " __TIME__);
 
-    //sp(F("setup : "));sp(__DATE__); spl(__TIME__);
-    spl("setup : " __DATE__ " @ " __TIME__);
-    
-    //sp("file name : ");spl( fileNameConstructor ('a'));
     pinMode( SWITCH, INPUT_PULLUP);
     pinMode( LED, OUTPUT );
     //penup();
@@ -99,14 +97,16 @@ void setup() {
             delay(200);
         }
     }
-    Lettres( 'a' );
-    
+    //Lettres( 'a' );
+    mytracer.tracerDebug();
     Serial.println("fin_2020");
     delay(1000);
 }
 
 String aEcrire="VOLAB";
 
+
+//----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
     // attente appui sur le bouton poussoir
     while( digitalRead( SWITCH )){

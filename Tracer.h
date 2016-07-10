@@ -61,5 +61,5 @@ class Tracer{
     
 };
 
-extern Tracer tracer;
+extern Tracer mytracer;
 #endif

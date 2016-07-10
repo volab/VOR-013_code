@@ -9,7 +9,7 @@
 
 #include "cmdEnum.h"
 
-class Lettres{
+class Lettres : Tracer {
     public:
     Lettres( char c );
 
