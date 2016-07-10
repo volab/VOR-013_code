@@ -3,13 +3,11 @@
 
 #include <SD.h>
 
-#define sp(X) Serial.print(X)
-#define spl(X) Serial.println(X)
+#include "debugSerialPort.h"
 
 #define NBRCMDMAX 30
 
-//global enum
-enum{ PD, PU, FW, TR, TL };
+#include "cmdEnum.h"
 
 class Lettres{
     public:

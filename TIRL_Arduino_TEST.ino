@@ -42,7 +42,7 @@ int servoPin = 8;
 //float wheel_base=112; //    # mm (increase = spiral in, ccw) 
 //int steps_rev=128; //        # 512 for 64x gearbox, 128 for 16x gearbox
 //int steps_rev=512;
-int delay_time=2; //         # time between steps in ms
+//int delay_time=2; //         # time between steps in ms
 
 #define LED 3
 #define SWITCH 2
@@ -51,15 +51,9 @@ int delay_time=2; //         # time between steps in ms
 int L_stepper_pins[] = { A5, A3, A2, A4 };
 int R_stepper_pins[] = { 4, 6, 7, 5 };
 
-int fwd_mask[][4] =  {{1, 0, 1, 0},
-    {0, 1, 1, 0},
-    {0, 1, 0, 1},
-    {1, 0, 0, 1}};
 
-int rev_mask[][4] =  {{1, 0, 0, 1},
-    {0, 1, 0, 1},
-    {0, 1, 1, 0},
-    {1, 0, 1, 0}};
+
+
 //
 
 /*
@@ -85,12 +79,7 @@ int readLettre( char caractere ){
 void setup() {
     Serial.begin(9600);
     randomSeed(analogRead(1));  
-    for(int pin=0; pin<4; pin++){
-        pinMode(L_stepper_pins[pin], OUTPUT);
-        digitalWrite(L_stepper_pins[pin], LOW);
-        pinMode(R_stepper_pins[pin], OUTPUT);
-        digitalWrite(R_stepper_pins[pin], LOW);
-    }
+
 
     //sp(F("setup : "));sp(__DATE__); spl(__TIME__);
     spl("setup : " __DATE__ " @ " __TIME__);
@@ -100,7 +89,7 @@ void setup() {
     pinMode( LED, OUTPUT );
     //penup();
     
-    //--------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     // sabordage en cas d'échec ! avec LED clignotante
     if (!SD.begin(10)) {
         Serial.println("initialization failed!");
@@ -118,56 +107,28 @@ void setup() {
 
 String aEcrire="VOLAB";
 
-void loop(){ // draw a calibration box 4 times
+void loop(){ 
+    // attente appui sur le bouton poussoir
     while( digitalRead( SWITCH )){
         digitalWrite( LED, !digitalRead(LED));
         delay(200);
     }
     digitalWrite( LED, LOW );
     delay(1000);
+    
+    //Ecriture du texte
     for (int i = 0; i< aEcrire.length(); i++){
         Serial.println(  aEcrire.charAt(i) );
         //    traceLetter( aEcrire.charAt(i) );
     }
 
-
-
-    done();      // releases stepper motor
+    //done();      // releases stepper motor
     while(1);    // wait for reset
 }
 
 // ----- TRACER FUNCTIONS -----------
 /*
-void trace(int cmd, int param){
-Serial.print(F("cmd = "));Serial.print( cmd );
-Serial.print(" / ");Serial.println( param );
-static int offsetRcpt = 0;
-switch (cmd){
-    default: // PU:
-    penup();
-    break;
-    case PD:
-    pendown();
-    break;
-    case FW:
-    forward( (float) param );
-    break;
-    case TR:
-    //correction déviation droite
-    offsetRcpt += param;
-    Serial.print(F("TR cumul : ")); Serial.println( offsetRcpt );
-    if (offsetRcpt >= 180 ){
-        offsetRcpt = 0;
-        param +=2;
-        Serial.print(F("Param corrige : ")); Serial.println( param );
-    }
-    right( (float) param );
-    break;    
-    case TL:
-    left( (float) param );
-    break;          
-}
-}
+
 
 void traceLetter(char c){
 byte *letterTable;
@@ -285,96 +246,7 @@ for(int x=0; x< nbrCmd; x++){
 }
 */
 // ----- HELPER FUNCTIONS -----------
-int step(float distance){
-    //int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
-    int steps = distance * STEPREV / (WHEELDIA * 3.1412); //24.61
-    /*
-Serial.print(distance);
-Serial.print(" ");
-Serial.print(steps_rev);
-Serial.print(" ");  
-Serial.print(wheel_dia);
-Serial.print(" ");  
-Serial.println(steps);
-delay(1000);*/
-    return steps;  
-}
 
-
-void forward(float distance){
-    int steps = step(distance);
-    //Serial.print("forward : ");Serial.println(distance);
-    for(int step=0; step<steps; step++){
-        for(int mask=0; mask<4; mask++){
-            for(int pin=0; pin<4; pin++){
-                digitalWrite(L_stepper_pins[pin], rev_mask[mask][pin]);
-                digitalWrite(R_stepper_pins[pin], fwd_mask[mask][pin]);
-            }
-            delay(delay_time);
-        } 
-    }
-}
-
-
-void backward(float distance){
-    int steps = step(distance);
-    for(int step=0; step<steps; step++){
-        for(int mask=0; mask<4; mask++){
-            for(int pin=0; pin<4; pin++){
-                digitalWrite(L_stepper_pins[pin], fwd_mask[mask][pin]);
-                digitalWrite(R_stepper_pins[pin], rev_mask[mask][pin]);
-            }
-            delay(delay_time);
-        } 
-    }
-}
-
-
-void right(float degrees){
-    float rotation = degrees / 360.0;
-    //Serial.print("right : ");Serial.println(degrees);
-    // float distance = wheel_base * 3.1412 * rotation;
-    float distance = WHEELBASE * 3.1412 * rotation;
-    int steps = step(distance);
-    for(int step=0; step<steps; step++){
-        for(int mask=0; mask<4; mask++){
-            for(int pin=0; pin<4; pin++){
-                digitalWrite(R_stepper_pins[pin], rev_mask[mask][pin]);
-                digitalWrite(L_stepper_pins[pin], rev_mask[mask][pin]);
-            }
-            delay(delay_time);
-        } 
-    }   
-}
-
-
-void left(float degrees){
-    float rotation = degrees / 360.0;
-    //Serial.print("left : ");Serial.println(degrees);
-    //float distance = wheel_base * 3.1412 * rotation;
-    float distance = WHEELBASE * 3.1412 * rotation;
-    int steps = step(distance);
-    for(int step=0; step<steps; step++){
-        for(int mask=0; mask<4; mask++){
-            for(int pin=0; pin<4; pin++){
-                digitalWrite(R_stepper_pins[pin], fwd_mask[mask][pin]);
-                digitalWrite(L_stepper_pins[pin], fwd_mask[mask][pin]);
-            }
-            delay(delay_time);
-        } 
-    }   
-}
-
-
-void done(){ // unlock stepper to save battery
-    for(int mask=0; mask<4; mask++){
-        for(int pin=0; pin<4; pin++){
-            digitalWrite(R_stepper_pins[pin], LOW);
-            digitalWrite(L_stepper_pins[pin], LOW);
-        }
-        delay(delay_time);
-    }
-}
 
 
 
