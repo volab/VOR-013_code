@@ -29,6 +29,8 @@
 class Tracer{
     public:
     Tracer();
+    // void tracerBegin();
+    void begin();
     void tracerDebug();
     
     protected:
@@ -61,5 +63,5 @@ class Tracer{
     
 };
 
-extern Tracer mytracer;
+// extern Tracer mytracer;
 #endif

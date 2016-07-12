@@ -17,9 +17,7 @@ Tracer::Tracer():
     _L_stepperPins( { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,\
                             (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 })
 {
-    _penServo.write(PENUP);
-    _upDownServopin = UDSERVOPIN; //quel est l'utilite de ce membre ?
-    _penServo.attach(_upDownServopin);
+
     // _L_stepperPins[4] =  { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,
                             // (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 };
     //_R_stepperPins[4] = { RSTEPPERPIN0, RSTEPPERPIN1, RSTEPPERPIN2, RSTEPPERPIN3 };
@@ -27,27 +25,35 @@ Tracer::Tracer():
     _R_stepperPins[1] = (int)RSTEPPERPIN1;
     _R_stepperPins[2] = (int)RSTEPPERPIN2;
     _R_stepperPins[3] = (int)RSTEPPERPIN3;
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// void Tracer::tracerBegin(){
+void Tracer::begin(){
     for(int pin=0; pin<4; pin++){
         pinMode(_L_stepperPins[pin], OUTPUT);
         digitalWrite(_L_stepperPins[pin], LOW);
         pinMode(_R_stepperPins[pin], OUTPUT);
         digitalWrite(_R_stepperPins[pin], LOW);
     }
+    _penServo.write(PENUP);
+    _upDownServopin = UDSERVOPIN; //quel est l'utilite de ce membre ?
+    _penServo.attach(_upDownServopin);
     penup();
 }
 
-//----------------------------------------------------------------------------------------------------------------------
 
 void Tracer::tracerDebug(){
 #ifdef DEBUG
     spl("into the tracer class");
     for (int i = 0; i < 4; i++){
-        dsp( "L_stepper_pin"); dsp(i);dsp(" = ");dspl(_L_stepperPins[i]);
+        dsp( F("L_stepper_pin")); dsp(i);dsp(" = ");dspl(_L_stepperPins[i]);
     }
     for (int i = 0; i < 4; i++){
-        dsp( "R_stepper_pin"); dsp(i);dsp(" = ");dspl(_R_stepperPins[i]);
+        dsp( F("R_stepper_pin")); dsp(i);dsp(" = ");dspl(_R_stepperPins[i]);
     }
-    dsp("steps for 10 mm = ");dspl( step(10));
+    dsp(F("steps for 10 mm = "));dspl( step(10));
 #endif
 }
 
@@ -186,4 +192,4 @@ void Tracer::trace(int cmd, int param){
     }
 }
 
-Tracer mytracer;
+// Tracer mytracer;

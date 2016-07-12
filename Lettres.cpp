@@ -1,17 +1,31 @@
 #include "Lettres.h"
 
-Lettres::Lettres( char c ){
-    _carac = toupper (c);
-    traceLettre();
+// 11/7 : decision de fonctionner avec begin dans Traceur 
+// plutot que dans le constructeur
+Lettres::Lettres( ){
+    // _carac = toupper (c);
+    // traceLettre();
 }
 
-void Lettres::traceLettre(){
+void Lettres::traceLettre(char c){
+    _carac = c ;
     sp(F("Trace lettre : ")); spl(_carac);
     readLettre();
     sp(F("nbr cmd = "));spl(_nbrCommandes);
     //spl("nbr cmd = " String(_nbrCommandes) );
-    printBufferCmd();
+    //printBufferCmd();
+    //tracerDebug();
+    //--------------------------------------------------------------------------
+
+// byte _bufferCommandes[NBRCMDMAX][2];
+// void trace(int cmd, int param);
+    for(int x=0; x < _nbrCommandes; x++){
+        trace( _bufferCommandes[x][0], _bufferCommandes[x][1] );
+    }
+   
+    //--------------------------------------------------------------------------
 }
+
 
 
 void Lettres::printBufferCmd(){
@@ -72,23 +86,22 @@ int Lettres::readLettre(){
         //parcours de lettre avec offset1 et 2
         int pos2 = lettre.indexOf('}', offset2);
         String sousChaine = lettre.substring(pos1+1, pos2);
-        spl( sousChaine );
+        //spl( sousChaine );
         offset1 = pos1+2;
         offset2 = pos2+1;
         // recherche de la sous-chaine commande
         int posVirgule = sousChaine.indexOf(',');
         String commande = sousChaine.substring(0, posVirgule );
-        sp(F("Commande : ")); sp( commande );
+        //sp(F("Commande : ")); sp( commande );
         //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
         _bufferCommandes[_nbrCommandes][0] = fromEnumCommande(commande);
         byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
-        sp(F(" - Parametre = "));spl(parametre);
+        //sp(F(" - Parametre = "));spl(parametre);
         _bufferCommandes[_nbrCommandes][1] = parametre;
         pos1 = lettre.indexOf('{', offset1);
         _nbrCommandes += 1 ;
     }
-    
-   //Serial.print("Nombre de commande = "); Serial.println(_nbrCommandes);
+
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }

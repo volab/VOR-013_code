@@ -2,6 +2,7 @@
 #define LETTRES_CLASS_H
 
 #include <SD.h>
+#include "Tracer.h"
 
 #include "debugSerialPort.h"
 
@@ -9,11 +10,14 @@
 
 #include "cmdEnum.h"
 
-class Lettres : Tracer {
+
+// heritage public : ref :
+// http://www.bruno-garcia.net/www/Cours/heritage.html#syntaxe
+class Lettres : public Tracer {
     public:
-    Lettres( char c );
-
-
+    Lettres( );
+    void setLettre( char c ){ _carac = c; };
+    void traceLettre( char c );
  
     private:
     char _carac;
@@ -23,7 +27,7 @@ class Lettres : Tracer {
     File _myFile;
     String fileNameConstructor( );
     int fromEnumCommande( String commande);
-    void traceLettre();
+    
     void printBufferCmd();
 };
 
