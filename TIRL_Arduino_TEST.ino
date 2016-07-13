@@ -55,23 +55,30 @@ void setup() {
         Serial.println(F("initialization failed!"));
         return;
         while (1){
-            digitalWrite( LED, !digitalRead(LED));
+            digitalWrite( LED, 1 );
+            delay(10);
+            digitalWrite( LED, 0 );
             delay(200);
         }
     }
     dsp( F("memoire dispo avant A : "));dspl( freeRam() );
     lettreur.begin();
-    lettreur.setLettre( 'a' );
-    lettreur.traceLettre();
-    //mytracer.tracerDebug();
+    
+    //lettreur.traceLettre( 'a' );
     
     dsp( F("memoire dispo avant B : "));dspl( freeRam() );
     // Lettres( 'b' );
+    /*
     lettreur.setLettre( 'b' );
     lettreur.traceLettre();
     dsp( F("memoire dispo apres B : "));dspl( freeRam() );
-    Serial.println(F("fin_2020") );
+    */
+    dspl(F("fin_2020") );
+#ifdef DEBUG    
+    while(1);
+#endif
     delay(1000);
+    
 }
 
 String aEcrire="VOLAB";
@@ -90,6 +97,7 @@ void loop(){
     //Ecriture du texte
     for (int i = 0; i< aEcrire.length(); i++){
         Serial.println(  aEcrire.charAt(i) );
+        lettreur.traceLettre( aEcrire.charAt(i) );
         //    traceLetter( aEcrire.charAt(i) );
     }
 

@@ -1,10 +1,10 @@
 //----------------------------------------------------------------------------------------------------------------------
-// myTracer pré-instancié en fin de fichier.
+// Class Tracer.
 // Joel - MajorLee- Soranzo
 // le 10/07/2016
 // VoLAB by VoRoBoTics
 //----------------------------------------------------------------------------------------------------------------------
-// class pour robot de desin, source thingiverse
+// class pour robot de desin, source Instructable
 
 
 #include "Tracer.h"
@@ -73,15 +73,6 @@ void Tracer::pendown(){
 int Tracer::step(float distance){
     //int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
     int steps = distance * STEPREV / (WHEELDIA * 3.1412); //24.61
-    /*
-Serial.print(distance);
-Serial.print(" ");
-Serial.print(steps_rev);
-Serial.print(" ");  
-Serial.print(wheel_dia);
-Serial.print(" ");  
-Serial.println(steps);
-delay(1000);*/
     return steps;  
 }
 
@@ -162,8 +153,6 @@ void Tracer::done(){ // unlock stepper to save battery
 //----------------------------------------------------------------------------------------------------------------------
 //protected
 void Tracer::trace(int cmd, int param){
-    //Serial.print(F("cmd = "));Serial.print( cmd );
-    //Serial.print(" / ");Serial.println( param );
     static int offsetRcpt = 0;
     switch (cmd){
         default: // PU:
@@ -178,11 +167,9 @@ void Tracer::trace(int cmd, int param){
         case TR:
         //correction déviation droite
         offsetRcpt += param;
-        //Serial.print(F("TR cumul : ")); Serial.println( offsetRcpt );
         if (offsetRcpt >= 180 ){
             offsetRcpt = 0;
             param +=2;
-            //Serial.print(F("Param corrige : ")); Serial.println( param );
         }
         right( (float) param );
         break;    
@@ -190,6 +177,89 @@ void Tracer::trace(int cmd, int param){
         left( (float) param );
         break;          
     }
+}
+
+int Tracer::fromEnumCommande( String commande){
+    if (commande == "PD") return PD;
+    if (commande == "PU") return PU;
+    if (commande == "FW") return FW;
+    if (commande == "TR") return TR;
+    if (commande == "TL") return TL;  
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// methode : filenameContructor
+// cree le nom de fichier pour acceder a la lettre
+// le lettre est convertie en majuscules
+// pas de verification !
+String Tracer::fileNameConstructor( String sousDir, String fileNameBase ){
+    return String(sousDir)+"/"+fileNameBase+String(".txt");
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// methode : pour debug
+void Tracer::printBufferCmd(){
+    spl(F("Contenu du buffer de commandes :"));
+    for (int i = 0; i< _nbrCommandes; i++){
+        sp( "cmd : ");sp( _bufferCommandes[i][0] );
+        sp( ", ");spl(_bufferCommandes[i][1]);
+    }
+}
+
+
+void Tracer::traceBuffer(){
+        for(int x=0; x < _nbrCommandes; x++){
+        trace( _bufferCommandes[x][0], _bufferCommandes[x][1] );
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+// methode readBufferFromSD
+// in:
+//  sous-repertoire, base du nom de fichier
+// out:
+// 0: echec
+// ou nombre de commandes
+// renseigne le membre prive : _bufferCommandes[30][2];
+int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
+    String fileName = fileNameConstructor( sousDir, fileNameBase );
+    dspl( fileName );
+    String chaineCmd = ""; //chaine des commandes
+    //--------------------------------------------------------------------------
+    // debut debug function read chaineCmd et surtout conversion ASCII to enum
+    _myFile = SD.open(fileName, FILE_READ);
+    byte octetlu;
+    while (_myFile.available()) {
+        octetlu = _myFile.read();
+        chaineCmd.concat((char)octetlu);
+    }
+    _myFile.close();
+    //sp(F("chaine lue : ")); spl( chaineCmd ) ;
+    int offset1 = 0;
+    int offset2 = 0;
+    int pos1 = chaineCmd.indexOf('{', offset1);
+    _nbrCommandes = 0;
+    while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
+        //chaineCmd est conserve intacte
+        //parcours de chaineCmd avec offset1 et 2
+        int pos2 = chaineCmd.indexOf('}', offset2);
+        String sousChaine = chaineCmd.substring(pos1+1, pos2);
+        offset1 = pos1+2;
+        offset2 = pos2+1;
+        // recherche de la sous-chaine commande
+        int posVirgule = sousChaine.indexOf(',');
+        String commande = sousChaine.substring(0, posVirgule );
+        //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
+        _bufferCommandes[_nbrCommandes][0] = fromEnumCommande(commande);
+        byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
+        //sp(F(" - Parametre = "));spl(parametre);
+        _bufferCommandes[_nbrCommandes][1] = parametre;
+        pos1 = chaineCmd.indexOf('{', offset1);
+        _nbrCommandes += 1 ;
+    }
+
+    if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
+    else return 0;
 }
 
 // Tracer mytracer;

@@ -1,6 +1,6 @@
 // aplphabet definition
 
-enum{ PD, PU, FW, TR, TL };
+//enum{ PD, PU, FW, TR, TL };
 /*
 byte letter_A[][2]={
   {TR,17}, {PD,0}, {FW,42}, {TR,146},
