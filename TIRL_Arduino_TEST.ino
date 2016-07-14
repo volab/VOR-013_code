@@ -25,6 +25,7 @@
 #include <SD.h>
 #include "Tracer.h"
 #include "Lettres.h"
+#include "Flasher.h"
 
 
 #define LED 3
@@ -37,6 +38,7 @@ int freeRam () {
 }
 
 Lettres lettreur; //ie traceur de lettre
+Flasher led;
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
@@ -46,34 +48,25 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    pinMode( LED, OUTPUT );
-    //penup();
+
+    /* sample code à concerver
+    led1.begin( 13, 10, 500 );
+    for ( ; led.getChangeStateCpt() < 100; ){
+        led.update();
+    }
+    */
+
     
     //------------------------------------------------------------------------------------------------------------------
     // sabordage en cas d'échec ! avec LED clignotante
     if (!SD.begin(10)) {
         Serial.println(F("initialization failed!"));
-        return;
+        led.begin( LED, 20, 200 );
         while (1){
-            digitalWrite( LED, 1 );
-            delay(10);
-            digitalWrite( LED, 0 );
-            delay(200);
+            led.update();
         }
     }
-    dsp( F("memoire dispo avant A : "));dspl( freeRam() );
-    lettreur.begin();
-    
-    //lettreur.traceLettre( 'a' );
-    
-    dsp( F("memoire dispo avant B : "));dspl( freeRam() );
-    // Lettres( 'b' );
-    /*
-    lettreur.setLettre( 'b' );
-    lettreur.traceLettre();
-    dsp( F("memoire dispo apres B : "));dspl( freeRam() );
-    */
-    dspl(F("fin_2020") );
+    lettreur.begin();  
 #ifdef DEBUG    
     while(1);
 #endif
@@ -87,33 +80,22 @@ String aEcrire="VOLAB";
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
     // attente appui sur le bouton poussoir
+    led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
-        digitalWrite( LED, !digitalRead(LED));
-        delay(200);
+        led.update();
     }
-    digitalWrite( LED, LOW );
+    led.stop();
     delay(1000);
     
     //Ecriture du texte
     for (int i = 0; i< aEcrire.length(); i++){
         Serial.println(  aEcrire.charAt(i) );
         lettreur.traceLettre( aEcrire.charAt(i) );
-        //    traceLetter( aEcrire.charAt(i) );
     }
 
     //done();      // releases stepper motor
     while(1);    // wait for reset
 }
-
-// ----- TRACER FUNCTIONS -----------
-/*
-
-
-void traceLetter(char c){
-
-}
-*/
-// ----- HELPER FUNCTIONS -----------
 
 
 
