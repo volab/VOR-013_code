@@ -1,4 +1,11 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Projet VOR-013 Vor Marley the drawing Robots
+// Major Lee
+// CC-0
+// Juillet 2016
+//----------------------------------------------------------------------------------------------------------------------
 #include "Lettres.h"
+
 
 // 11/7 : decision de fonctionner avec begin dans Traceur 
 // plutot que dans le constructeur

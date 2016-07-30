@@ -1,3 +1,9 @@
+//----------------------------------------------------------------------------------------------------------------------
+// Projet VOR-013 Vor Marley the drawing Robots
+// Major Lee
+// CC-0
+// Juillet 2016
+//----------------------------------------------------------------------------------------------------------------------
 // 
 // add bp and led to start
 // majorLee 5/3
@@ -26,6 +32,7 @@
 #include "Tracer.h"
 #include "Lettres.h"
 #include "Flasher.h"
+#include "VOR13.h"
 
 
 #define LED 3
