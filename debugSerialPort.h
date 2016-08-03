@@ -1,7 +1,7 @@
 #ifndef DEBUGSERIALPORT_H
 #define DEBUGSERIALPORT_H
 
-//#define DEBUG
+#define DEBUG
 //comment to pass in non debug mode
 
 #define SERIALDEBUG Serial

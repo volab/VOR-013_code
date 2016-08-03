@@ -33,6 +33,7 @@
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
+#include "bluetooth.h"
 
 
 #define LED 3
@@ -46,6 +47,7 @@ int freeRam () {
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
+V13BT bluetoothChanel ;
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
@@ -55,6 +57,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
+    bluetoothChanel.begin(9600);
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -73,16 +76,20 @@ void setup() {
             led.update();
         }
     }
-    lettreur.begin();  
+    lettreur.begin();
+/*    
 #ifdef DEBUG    
     while(1);
 #endif
+*/
     delay(1000);
     
 }
 
 String aEcrire="VOLAB";
-
+int mode = MODE_ECRIT; // mode par defaut
+int etat = ETAT_ATTENTE;
+int recState = NOREC;
 
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
@@ -90,6 +97,7 @@ void loop(){
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
+        bluetoothChanel.update(mode, etat, recState);
     }
     led.stop();
     delay(1000);

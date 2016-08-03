@@ -16,11 +16,12 @@
 #define ETAT_WORK 1
 #define ETAT_FINI 2
 
-#define LASTREC_GO 0
-#define LASTREC_DESSINE 1
-#define LASTREC_TEXTE 2
-#define LASTREC_MODEDESSIN 3
-#define LASTREC_MODETEXTE 4
+#define NOREC 0
+#define LASTREC_GO 1
+#define LASTREC_DESSINE 2
+#define LASTREC_TEXTE 3
+#define LASTREC_MODEDESSIN 4
+#define LASTREC_MODETEXTE 5
 
 
 #endif
