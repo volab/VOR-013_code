@@ -93,11 +93,18 @@ int recState = NOREC;
 
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
+    String recTrame ="";
+    
     // attente appui sur le bouton poussoir
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
         bluetoothChanel.update(mode, etat, recState);
+        if ( bluetoothChanel.getRec( recTrame )){
+            bluetoothChanel.echoTrame( recTrame );
+            //sp("quelques chose a dire ? "); spl( recTrame);
+            recState = LASTREC_UNKNOW;
+        } 
     }
     led.stop();
     delay(1000);

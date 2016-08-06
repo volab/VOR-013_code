@@ -13,6 +13,7 @@
 #define DELAYSEND_STATUS 5000 //ms
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include "debugSerialPort.h"
 
 
 class V13BT{
@@ -24,6 +25,8 @@ class V13BT{
     String _bufRec;
     long _delaySendStatus;
     long _prevDelaySendStatus;
+    char _prevChar;
+    long _trameNum;
     
 
     public:
@@ -32,6 +35,7 @@ class V13BT{
     void update(int mode, int etat, int lastRec);
     boolean getFlagRec();
     boolean getRec(String& buffRecu ); //si chaine recu alors vrai
+    void echoTrame(String trame);
 
     
 };

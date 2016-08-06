@@ -22,9 +22,13 @@ V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 
 
 void V13BT::begin(int speed){
+    //Syntaxe possible en utilisant les pointeurs et pas l'init dans la
+    // liste d'intialisation du constructeur
     //_bluetoothSerial =  new SoftwareSerial( A1, A0 );
     //_bluetoothSerial->begin( speed );
     _bluetoothSerial.begin( speed );
+    _prevChar = 0;
+    _trameNum=0;
     
 }
 
@@ -71,33 +75,52 @@ void V13BT::update(int mode, int etat, int lastRec){
             case LASTREC_MODETEXTE:
             trame += "recu mode texte";
             break;
+            case LASTREC_UNKNOW:
+            trame += "commande inconnue";
+            break;
         }
+        trame += ", " + String( _trameNum );
         //_bluetoothSerial->println( trame);
         _bluetoothSerial.println( trame);
-        // ne faire que si _bufRec a ete vide
-        //if ( _bluetoothSerial->available() ){
-        if ( _bluetoothSerial.available() ){
-            //char c = _bluetoothSerial->read();
-            char c = _bluetoothSerial.read();
-            if ( c !=  '\n' && c != 0xA ){
-                _bufRec += String(c);
-            } else {
-                _flagRec = true;
-            }
-            // last char rec pour tester les CR, LF
-            // CR ou LF seul
-        }
+        _trameNum++;
     }
+        // ne faire que si _bufRec a ete vide
+        // ou flagRec = false;
+
+    //if ( _bluetoothSerial->available() ){
+    if ( !_flagRec && _bluetoothSerial.available() ){
+        //char c = _bluetoothSerial->read();
+        
+        char c = _bluetoothSerial.read();
+        if ( c !=  '\n' && c != 0xA ){
+            _bufRec += String(c);
+            //sp( "char recu : "); spl( _bufRec );
+        } else {
+            if (_prevChar != '\n' && _prevChar != 0xA ) _flagRec = true;
+            //sp("flagrec = "); spl( _flagRec);
+        }
+        _prevChar = c;
+        // last char rec pour tester les CR, LF
+        // CR ou LF seul
+    }    
 }
 
 
 
 
 boolean V13BT::getFlagRec(){
-    
+    return _flagRec;
 }
 
 boolean V13BT::getRec(String& buffRecu ){
-    _flagRec = false ; // reset flag rec
+    if ( ! _flagRec ) return false;
+    //sp( "bufrec = ");spl( _bufRec );
+    buffRecu = _bufRec;
     _bufRec = "";
+    _flagRec = false ; // reset flag rec
+    return true;
+}
+
+void V13BT::echoTrame(String trame){
+    _bluetoothSerial.println( trame);
 }

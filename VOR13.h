@@ -22,7 +22,7 @@
 #define LASTREC_TEXTE 3
 #define LASTREC_MODEDESSIN 4
 #define LASTREC_MODETEXTE 5
-
+#define LASTREC_UNKNOW 6
 
 #endif
 
