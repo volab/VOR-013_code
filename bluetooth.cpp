@@ -7,7 +7,7 @@
 // classe chargee des comm bluetooth
 //----------------------------------------------------------------------------------------------------------------------
 #include "bluetooth.h"
-#include "VOR13.h"
+//#include "VOR13.h"
 
 V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 //V13BT::V13BT() {
@@ -32,53 +32,13 @@ void V13BT::begin(int speed){
     
 }
 
-void V13BT::update(int mode, int etat, int lastRec){
-    String trame;
+//void V13BT::update(int mode, int etat, int lastRec){
+void V13BT::update( String trame ){
+    //String trame;
     if ( millis() - _prevDelaySendStatus > _delaySendStatus ){
         _prevDelaySendStatus = millis();
-        //send status mais V13BT ne connais pas l'etat de M. VOR Marlay
-        switch (mode){
-            case MODE_ECRIT:
-            trame = "Mode ecrit,";
-            break;
-            case MODE_DESSINE:
-            trame = "Mode dessin,";
-            break;
-        }
-        switch (etat){
-            case ETAT_ATTENTE:
-            trame += "en attente, ";
-            break;
-            case ETAT_WORK:
-            trame += "en cours, ";
-            break;
-            case ETAT_FINI:
-            trame += "fini, ";
-            break;
-        }
-        switch (lastRec){
-            case NOREC:
-            trame += "rien recu";
-            break;
-            case LASTREC_GO:
-            trame += "recu GO";
-            break;
-            case LASTREC_DESSINE:
-            trame += "recu dessine";
-            break;
-            case LASTREC_TEXTE:
-            trame += "recu texte";
-            break;
-            case LASTREC_MODEDESSIN:
-            trame += "recu mode dessin";
-            break;
-            case LASTREC_MODETEXTE:
-            trame += "recu mode texte";
-            break;
-            case LASTREC_UNKNOW:
-            trame += "commande inconnue";
-            break;
-        }
+
+
         trame += ", " + String( _trameNum );
         //_bluetoothSerial->println( trame);
         _bluetoothSerial.println( trame);

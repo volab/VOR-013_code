@@ -32,7 +32,8 @@ class V13BT{
     public:
     V13BT();
     void begin(int speed);
-    void update(int mode, int etat, int lastRec);
+    //void update(int mode, int etat, int lastRec);
+    void update( String trameEtat ); //update : emet et recoit
     boolean getFlagRec();
     boolean getRec(String& buffRecu ); //si chaine recu alors vrai
     void echoTrame(String trame);

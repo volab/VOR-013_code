@@ -24,5 +24,18 @@
 #define LASTREC_MODETEXTE 5
 #define LASTREC_UNKNOW 6
 
+class VOR13 {
+    String _aEcrire;
+    int _mode;
+    int _etat;
+    int _recState;
+    
+    public:
+    VOR13();
+    void begin();
+    String buildStateTrame();
+    String get_aEcrire();
+};
+
 #endif
 

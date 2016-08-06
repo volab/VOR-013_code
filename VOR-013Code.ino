@@ -45,6 +45,7 @@ int freeRam () {
     return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
+VOR13 robot;
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
 V13BT bluetoothChanel ;
@@ -53,7 +54,7 @@ V13BT bluetoothChanel ;
 void setup() {
     Serial.begin(9600);
     randomSeed(analogRead(1));  
-
+    robot.begin();
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
@@ -86,10 +87,12 @@ void setup() {
     
 }
 
+/*
 String aEcrire="VOLAB";
 int mode = MODE_ECRIT; // mode par defaut
 int etat = ETAT_ATTENTE;
 int recState = NOREC;
+*/
 
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
@@ -97,22 +100,27 @@ void loop(){
     
     // attente appui sur le bouton poussoir
     led.begin( LED, 200, 200);
+    //boolean go = false;
+    //while(!go ){
     while( digitalRead( SWITCH )){
         led.update();
-        bluetoothChanel.update(mode, etat, recState);
+        //bluetoothChanel.update(mode, etat, recState);
+        bluetoothChanel.update( robot.buildStateTrame() );
         if ( bluetoothChanel.getRec( recTrame )){
             bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
-            recState = LASTREC_UNKNOW;
-        } 
+            //recState = LASTREC_UNKNOW;
+            //robot.interpreteTrame( recTrame );
+        }
+        //go = !digitalRead( SWITCH ) | robot.go();
     }
     led.stop();
     delay(1000);
     
     //Ecriture du texte
-    for (int i = 0; i< aEcrire.length(); i++){
-        Serial.println(  aEcrire.charAt(i) );
-        lettreur.traceLettre( aEcrire.charAt(i) );
+    for (int i = 0; i< robot.get_aEcrire().length(); i++){
+        //Serial.println(  aEcrire.charAt(i) );
+        lettreur.traceLettre( robot.get_aEcrire().charAt(i) );
     }
 
     //done();      // releases stepper motor
