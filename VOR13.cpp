@@ -60,10 +60,6 @@ String VOR13::buildStateTrame(){
     return trame;
 }
 
-String VOR13::get_aEcrire(){
-    return _aEcrire;
-}
-
 boolean VOR13::go(){
     return ( _recState == LASTREC_GO );
 }

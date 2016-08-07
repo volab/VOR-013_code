@@ -14,7 +14,6 @@
 
 
 #include <Servo.h>
-//#include "letters.h"
 #define TABLETTERMAXLIGN 25
 /*
 ** MOSI - pin 11
@@ -87,40 +86,31 @@ void setup() {
     
 }
 
-/*
-String aEcrire="VOLAB";
-int mode = MODE_ECRIT; // mode par defaut
-int etat = ETAT_ATTENTE;
-int recState = NOREC;
-*/
-
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
     String recTrame ="";
     
     // attente appui sur le bouton poussoir
     led.begin( LED, 200, 200);
-    //boolean go = false;
-    //while(!go ){
-    while( digitalRead( SWITCH )){
+    boolean go = false;
+    while(!go ){
+    //while( digitalRead( SWITCH )){
         led.update();
-        //bluetoothChanel.update(mode, etat, recState);
         bluetoothChanel.update( robot.buildStateTrame() );
         if ( bluetoothChanel.getRec( recTrame )){
-            bluetoothChanel.echoTrame( recTrame );
-            //sp("q ? "); spl( recTrame);
-            //recState = LASTREC_UNKNOW;
+            //bluetoothChanel.echoTrame( recTrame );
             robot.interpreteTrame( recTrame );
         }
-        //go = !digitalRead( SWITCH ) | robot.go();
+        go = !digitalRead( SWITCH ) | robot.go();
     }
     led.stop();
     delay(1000);
-    
+    robot.setState( ETAT_WORK );
     //Ecriture du texte
     for (int i = 0; i< robot.get_aEcrire().length(); i++){
         //Serial.println(  aEcrire.charAt(i) );
         lettreur.traceLettre( robot.get_aEcrire().charAt(i) );
+        bluetoothChanel.update( robot.buildStateTrame() );
     }
 
     //done();      // releases stepper motor

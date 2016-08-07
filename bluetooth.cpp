@@ -9,6 +9,7 @@
 #include "bluetooth.h"
 //#include "VOR13.h"
 
+
 V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 //V13BT::V13BT() {
     _flagRec = false;
@@ -29,42 +30,53 @@ void V13BT::begin(int speed){
     _bluetoothSerial.begin( speed );
     _prevChar = 0;
     _trameNum=0;
+    _flagBTconnecte = false;
+    _timeoutConnexion = 0;
     
 }
 
 //void V13BT::update(int mode, int etat, int lastRec){
 void V13BT::update( String trame ){
-    //String trame;
-    if ( millis() - _prevDelaySendStatus > _delaySendStatus ){
+    //*********************EMISSION*************************************************************************************
+    if  ( _flagBTconnecte && ( millis() - _prevDelaySendStatus > _delaySendStatus ) ){
         _prevDelaySendStatus = millis();
-
-
         trame += ", " + String( _trameNum );
         //_bluetoothSerial->println( trame);
         _bluetoothSerial.println( trame );
         _trameNum++;
     }
-        // ne faire que si _bufRec a ete vide
-        // ou flagRec = false;
+    //*********************FILTRE CR, LF********************************************************************************
     if (_prevChar == 0xD || _prevChar == 0xA ){
         _flagRec = true;
         while ( _bluetoothSerial.available() ) _bluetoothSerial.read(); //flush buffer
         _prevChar = 0;
-    }  
-    //if ( _bluetoothSerial->available() ){
+    }
+    
+    
+    //*********************test Mode Connecte***************************************************************************
+    if ( _flagRec && _bufRec == "syncVOR13" ){
+        _flagBTconnecte = true;
+        _flagRec = false;
+        _timeoutConnexion = millis();
+        dspl("Mode Con");
+        _bufRec = "";
+    }
+    //*********************RECEPTION************************************************************************************
     if ( !_flagRec && _bluetoothSerial.available() ){
-        //char c = _bluetoothSerial->read();
         
         char c = _bluetoothSerial.read();
-        sp("char = ");SERIALDEBUG.println( c, HEX );
+        //sp("char = ");SERIALDEBUG.println( c, HEX );
         if ( c !=  0xD && c != 0xA ){
             _bufRec += String(c);
-            //sp( "char recu : "); spl( _bufRec );
         }
         _prevChar = c;
-        // last char rec pour tester les CR, LF
-        // CR ou LF seul
-    }    
+        _timeoutConnexion = millis();
+    }
+    
+    if ( _flagBTconnecte && (millis() - _timeoutConnexion) >= (DELAYTIMEOUTCONNEXION * 1000) ){
+        _flagBTconnecte = false ; // disconnected
+        dspl("Mode dec");
+    }
 }
 
 

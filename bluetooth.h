@@ -11,6 +11,7 @@
 
 
 #define DELAYSEND_STATUS 5000 //ms
+#define DELAYTIMEOUTCONNEXION 20 //en seconde
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include "debugSerialPort.h"
@@ -27,6 +28,8 @@ class V13BT{
     long _prevDelaySendStatus;
     char _prevChar;
     long _trameNum;
+    boolean _flagBTconnecte;
+    long _timeoutConnexion;
     
 
     public:
