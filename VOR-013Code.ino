@@ -47,7 +47,7 @@ int freeRam () {
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
-//V13BT bluetoothChanel ;
+V13BT bluetoothChanel ;
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
