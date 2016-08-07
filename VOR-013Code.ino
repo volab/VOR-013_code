@@ -47,7 +47,7 @@ int freeRam () {
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
-V13BT bluetoothChanel ;
+//V13BT bluetoothChanel ;
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
@@ -57,7 +57,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    bluetoothChanel.begin(9600);
+    //bluetoothChanel.begin(9600);
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -87,9 +87,11 @@ void setup() {
 }
 
 String aEcrire="VOLAB";
+/*
 int mode = MODE_ECRIT; // mode par defaut
 int etat = ETAT_ATTENTE;
 int recState = NOREC;
+*/
 
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
@@ -99,12 +101,14 @@ void loop(){
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
+        /*
         bluetoothChanel.update(mode, etat, recState);
         if ( bluetoothChanel.getRec( recTrame )){
             bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
             recState = LASTREC_UNKNOW;
         } 
+        */
     }
     led.stop();
     delay(1000);
