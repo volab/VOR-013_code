@@ -60,7 +60,7 @@ void Tracer::tracerDebug(){
 //----------------------------------------------------------------------------------------------------------------------
 void Tracer::penup(){
     _penServo.attach(_upDownServopin);
-    delay(20);
+    delay(250);
     _penServo.write(PENUP);
     delay(250);
     _penServo.detach();
@@ -68,7 +68,7 @@ void Tracer::penup(){
 
 void Tracer::pendown(){
     _penServo.attach(_upDownServopin);
-    delay(20);  
+    delay(250);  
     _penServo.write(PENDOWN);
     delay(250);
     _penServo.detach();
