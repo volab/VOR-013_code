@@ -60,7 +60,7 @@ void setup() {
     pinMode( SWITCH, INPUT_PULLUP);
     bluetoothChanel.begin(9600);
 
-    /* sample code à concerver
+    /* sample code à concerver pour la beautee
     led1.begin( 13, 10, 500 );
     for ( ; led.getChangeStateCpt() < 100; ){
         led.update();
@@ -108,9 +108,9 @@ void loop(){
         bluetoothChanel.update( robot.buildStateTrame() );
         if ( bluetoothChanel.getRec( recTrame )){
             bluetoothChanel.echoTrame( recTrame );
-            //sp("quelques chose a dire ? "); spl( recTrame);
+            //sp("q ? "); spl( recTrame);
             //recState = LASTREC_UNKNOW;
-            //robot.interpreteTrame( recTrame );
+            robot.interpreteTrame( recTrame );
         }
         //go = !digitalRead( SWITCH ) | robot.go();
     }

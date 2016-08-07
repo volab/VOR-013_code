@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "VOR13.h"
+#include "debugSerialPort.h"
 
 VOR13::VOR13(): _aEcrire( "VOLAB" ) {}
 
@@ -40,17 +41,17 @@ String VOR13::buildStateTrame(){
         case LASTREC_GO:
         trame += "recu GO";
         break;
-        case LASTREC_DESSINE:
+        case LASTREC_DESSINE: // finalement pas utilise
         trame += "recu dessine";
         break;
-        case LASTREC_TEXTE:
-        trame += "recu texte";
+        case LASTREC_TEXTE: // finalement pas utilise
+        trame += "recu : " + _aEcrire ;
         break;
         case LASTREC_MODEDESSIN:
-        trame += "recu mode dessin";
+        trame += "recu mode dessin et " ; // + aDessiner
         break;
         case LASTREC_MODETEXTE:
-        trame += "recu mode texte";
+        trame += "recu mode texte et " + _aEcrire ;
         break;
         case LASTREC_UNKNOW:
         trame += "commande inconnue";
@@ -62,3 +63,40 @@ String VOR13::buildStateTrame(){
 String VOR13::get_aEcrire(){
     return _aEcrire;
 }
+
+boolean VOR13::go(){
+    return ( _recState == LASTREC_GO );
+}
+
+void VOR13::interpreteTrame( String trame ){
+    if ( trame == "GO" ){
+        _recState = LASTREC_GO;
+        return;
+    } else if ( trame.indexOf('_') == 1 ){
+        if ( trame.startsWith("D")){
+            _mode = MODE_DESSINE;
+            //aDessinner =  trame.substring(2);
+            //verifier si le fichier exist
+            //sinon => unknow file => retour mode ecrit
+            // dessine reste a implementer
+            _recState = LASTREC_MODEDESSIN;
+        } else if ( trame.startsWith("E") ){
+            _mode = MODE_ECRIT;
+            _aEcrire = trame.substring(2);
+            sp("-");SERIALDEBUG.print( _aEcrire.charAt(_aEcrire.length()-1 ), HEX );spl("-");
+            _recState = LASTREC_MODETEXTE;
+        }
+    } else {
+        _recState = LASTREC_UNKNOW;
+    }
+}
+
+
+
+
+
+
+
+
+
+

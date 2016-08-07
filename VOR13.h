@@ -35,6 +35,8 @@ class VOR13 {
     void begin();
     String buildStateTrame();
     String get_aEcrire();
+    void interpreteTrame( String recTrame );
+    boolean go();
 };
 
 #endif

@@ -41,23 +41,25 @@ void V13BT::update( String trame ){
 
         trame += ", " + String( _trameNum );
         //_bluetoothSerial->println( trame);
-        _bluetoothSerial.println( trame);
+        _bluetoothSerial.println( trame );
         _trameNum++;
     }
         // ne faire que si _bufRec a ete vide
         // ou flagRec = false;
-
+    if (_prevChar == 0xD || _prevChar == 0xA ){
+        _flagRec = true;
+        while ( _bluetoothSerial.available() ) _bluetoothSerial.read(); //flush buffer
+        _prevChar = 0;
+    }  
     //if ( _bluetoothSerial->available() ){
     if ( !_flagRec && _bluetoothSerial.available() ){
         //char c = _bluetoothSerial->read();
         
         char c = _bluetoothSerial.read();
-        if ( c !=  '\n' && c != 0xA ){
+        sp("char = ");SERIALDEBUG.println( c, HEX );
+        if ( c !=  0xD && c != 0xA ){
             _bufRec += String(c);
             //sp( "char recu : "); spl( _bufRec );
-        } else {
-            if (_prevChar != '\n' && _prevChar != 0xA ) _flagRec = true;
-            //sp("flagrec = "); spl( _flagRec);
         }
         _prevChar = c;
         // last char rec pour tester les CR, LF
