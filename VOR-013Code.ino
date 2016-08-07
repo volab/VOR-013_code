@@ -57,7 +57,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    //bluetoothChanel.begin(9600);
+    bluetoothChanel.begin(9600);
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
