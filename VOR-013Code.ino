@@ -39,11 +39,7 @@
 #define LED 3
 #define SWITCH 2
 
-int freeRam () {
-    extern int __heap_start, *__brkval; 
-    int v; 
-    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
-}
+
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
@@ -105,9 +101,7 @@ void loop(){
             bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
             recState = LASTREC_UNKNOW;
-            
         } 
-        
     }
     led.stop();
     delay(1000);
