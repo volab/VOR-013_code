@@ -27,7 +27,7 @@ void Lettres::traceLettre(char c){
     int nbCmd = readBufferFromSD( "letters", String( _carac) );
 #ifdef DEBUG
     printBufferCmd();
-    tracerDebug();
+    //tracerDebug();
 #else
     //--------------------------------------------------------------------------
     traceBuffer();

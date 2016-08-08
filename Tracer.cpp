@@ -203,7 +203,7 @@ String Tracer::fileNameConstructor( String sousDir, String fileNameBase ){
 //----------------------------------------------------------------------------------------------------------------------
 // methode : pour debug
 void Tracer::printBufferCmd(){
-    spl(F("Contenu du buffer de commandes :"));
+    sp(F("Contenu du buffer de commandes :")); spl( _nbrCommandes );
     for (int i = 0; i< _nbrCommandes; i++){
         sp( "cmd : ");sp( _bufferCommandes[i][0] );
         sp( ", ");spl(_bufferCommandes[i][1]);

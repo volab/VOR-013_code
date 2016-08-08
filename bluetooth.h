@@ -34,7 +34,8 @@ class V13BT{
     void begin(int speed);
     void update(int mode, int etat, int lastRec);
     boolean getFlagRec();
-    boolean getRec(String& buffRecu ); //si chaine recu alors vrai
+    //boolean getRec(String& buffRecu ); //si chaine recu alors vrai
+    boolean getRec(String buffRecu ); //si chaine recu alors vrai
     void echoTrame(String trame);
 
     

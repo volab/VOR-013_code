@@ -112,7 +112,8 @@ boolean V13BT::getFlagRec(){
     return _flagRec;
 }
 
-boolean V13BT::getRec(String& buffRecu ){
+//boolean V13BT::getRec(String& buffRecu ){
+boolean V13BT::getRec(String buffRecu ){
     if ( ! _flagRec ) return false;
     //sp( "bufrec = ");spl( _bufRec );
     buffRecu = _bufRec;

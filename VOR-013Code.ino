@@ -86,7 +86,7 @@ String aEcrire="VOLAB";
 int mode = MODE_ECRIT; // mode par defaut
 int etat = ETAT_ATTENTE;
 int recState = NOREC;
-
+long toto;
 
 //----------------------------------------------------------------------------------------------------------------------
 void loop(){ 
@@ -96,12 +96,15 @@ void loop(){
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
+        
         bluetoothChanel.update(mode, etat, recState);  
         if ( bluetoothChanel.getRec( recTrame )){
-            bluetoothChanel.echoTrame( recTrame );
+            //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
             recState = LASTREC_UNKNOW;
+            //toto = 3;
         } 
+        
     }
     led.stop();
     delay(1000);
