@@ -97,7 +97,7 @@ void loop(){
     while( digitalRead( SWITCH )){
         led.update();
         
-        bluetoothChanel.update(mode, etat, recState);  
+        //bluetoothChanel.update(mode, etat, recState);  
         if ( bluetoothChanel.getRec( recTrame )){
             //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);

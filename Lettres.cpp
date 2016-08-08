@@ -25,6 +25,7 @@ void Lettres::traceLettre(char c){
     //sp(F("Trace lettre : ")); spl(_carac);
     spl( freeRam ());
     int nbCmd = readBufferFromSD( "letters", String( _carac) );
+    dspl( nbCmd );
 #ifdef DEBUG
     printBufferCmd();
     //tracerDebug();
