@@ -26,8 +26,8 @@ V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 void V13BT::begin(int speed){
     //Syntaxe possible en utilisant les pointeurs et pas l'init dans la
     // liste d'intialisation du constructeur
-    //_bluetoothSerial =  new SoftwareSerial( A1, A0 );
-    _bluetoothSerial =  new SoftwareSerial( 8, 9 );
+    _bluetoothSerial =  new SoftwareSerial( A1, A0 );
+    //_bluetoothSerial =  new SoftwareSerial( 8, 9 );
     //_bluetoothSerial->begin( speed );
     _flagRec = false;
     _bufRec = "";

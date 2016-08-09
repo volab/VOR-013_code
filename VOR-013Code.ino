@@ -28,9 +28,9 @@
 ** 2 Switch
 */
 #include "bluetooth.h"
-#include <SPI.h>
-#include <SD.h>
-#include "Tracer.h"
+//#include <SPI.h>
+//#include <SD.h>
+//#include "Tracer.h"
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
@@ -54,7 +54,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    bluetoothChanel.begin(9600);
+
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -74,6 +74,7 @@ void setup() {
         }
     }
     lettreur.begin();
+    //bluetoothChanel.begin(9600);
 /*    
 #ifdef DEBUG    
     while(1);

@@ -41,6 +41,7 @@ void Tracer::begin(){
     _upDownServopin = UDSERVOPIN; //quel est l'utilite de ce membre ?
     _penServo.attach(_upDownServopin);
     penup();
+    _chaineCmd.reserve(300);
 }
 
 
@@ -217,6 +218,12 @@ void Tracer::traceBuffer(){
     }
 }
 
+int freeRam () {
+    extern int __heap_start, *__brkval; 
+    int v; 
+    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 // methode readBufferFromSD
 // in:
@@ -240,11 +247,12 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         _chaineCmd.concat((char)octetlu);
     }
     _myFile.close();
-    //sp(F("chaine lue : ")); spl( chaineCmd ) ;
+    sp(F("chaine lue : ")); spl( _chaineCmd ) ;
     int offset1 = 0;
     int offset2 = 0;
     int pos1 = _chaineCmd.indexOf('{', offset1);
     _nbrCommandes = 0;
+    dspl( freeRam() );
     while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
         //_chaineCmd est conserve intacte
         //parcours de _chaineCmd avec offset1 et 2
@@ -263,7 +271,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         pos1 = _chaineCmd.indexOf('{', offset1);
         _nbrCommandes += 1 ;
     }
-
+    //dspl( _nbrCommandes );
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }
