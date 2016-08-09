@@ -97,16 +97,17 @@ void loop(){
     while( digitalRead( SWITCH )){
         led.update();
         
-        //bluetoothChanel.update(mode, etat, recState);  
+        bluetoothChanel.update(mode, etat, recState);  
         if ( bluetoothChanel.getRec( recTrame )){
             //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
-            recState = LASTREC_UNKNOW;
+            recState = NOREC;
             //toto = 3;
         } 
         
     }
     led.stop();
+    bluetoothChanel.end();
     delay(1000);
     
     //Ecriture du texte

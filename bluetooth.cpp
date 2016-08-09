@@ -32,56 +32,59 @@ void V13BT::begin(int speed){
     
 }
 
-void V13BT::update(int mode, int etat, int lastRec){
+void V13BT::update(int mode, int etat, int lastRec){ 
     String trame;
+    trame.reserve(40);
     if ( millis() - _prevDelaySendStatus > _delaySendStatus ){
         _prevDelaySendStatus = millis();
         //send status mais V13BT ne connais pas l'etat de M. VOR Marlay
         switch (mode){
             case MODE_ECRIT:
-            trame = "Mode ecrit,";
+            trame = F("Mode ecrit,");
             break;
             case MODE_DESSINE:
-            trame = "Mode dessin,";
+            trame = F("Mode dessin,");
             break;
         }
         switch (etat){
             case ETAT_ATTENTE:
-            trame += "en attente, ";
+            trame += F("en attente, ");
             break;
             case ETAT_WORK:
-            trame += "en cours, ";
+            trame += F("en cours, ");
             break;
             case ETAT_FINI:
-            trame += "fini, ";
+            trame += F("fini, ");
             break;
         }
+        
         switch (lastRec){
             case NOREC:
-            trame += "rien recu";
+            trame += F("rien recu");
             break;
             case LASTREC_GO:
-            trame += "recu GO";
+            trame += F("recu GO");
             break;
             case LASTREC_DESSINE:
-            trame += "recu dessine";
+            trame += F("recu dessine");
             break;
             case LASTREC_TEXTE:
-            trame += "recu texte";
+            trame += F("recu texte");
             break;
             case LASTREC_MODEDESSIN:
-            trame += "recu mode dessin";
+            trame += F("recu mode dessin");
             break;
             case LASTREC_MODETEXTE:
-            trame += "recu mode texte";
+            trame += F("recu mode texte");
             break;
             case LASTREC_UNKNOW:
-            trame += "commande inconnue";
+            trame += F("commande inconnue");
             break;
         }
+        
         trame += ", " + String( _trameNum );
         //_bluetoothSerial->println( trame);
-        _bluetoothSerial.println( trame);
+        //_bluetoothSerial.println( trame );
         _trameNum++;
     }
         // ne faire que si _bufRec a ete vide
@@ -102,7 +105,8 @@ void V13BT::update(int mode, int etat, int lastRec){
         _prevChar = c;
         // last char rec pour tester les CR, LF
         // CR ou LF seul
-    }    
+    } 
+    
 }
 
 

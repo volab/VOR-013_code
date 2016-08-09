@@ -39,6 +39,7 @@ class V13BT{
     boolean getRec(String& buffRecu ); //si chaine recu alors vrai
     //boolean getRec(String buffRecu ); //si chaine recu alors vrai
     void echoTrame(String trame);
+    void end(){ _bluetoothSerial.end(); };
 
     
 };
