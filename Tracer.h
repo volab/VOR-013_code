@@ -32,7 +32,7 @@
 #define RSTEPPERPIN2 7
 #define RSTEPPERPIN3 5
 
-#define NBRCMDMAX 30
+#define NBRCMDMAX 35
 
 //----------------------------------------------------------------------------------------------------------------------
 class Tracer{

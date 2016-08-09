@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 #include "bluetooth.h"
 #include "VOR13.h"
-
+/*
 V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 //V13BT::V13BT() {
     _flagRec = false;
@@ -19,21 +19,27 @@ V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
     //SoftwareSerial _bluetoothSerial( A1, A0 ); //
     
 }
+*/
+
 
 
 void V13BT::begin(int speed){
     //Syntaxe possible en utilisant les pointeurs et pas l'init dans la
     // liste d'intialisation du constructeur
-    //_bluetoothSerial =  new SoftwareSerial( A1, A0 );
-    //_bluetoothSerial->begin( speed );
-    _bluetoothSerial.begin( speed );
+    _bluetoothSerial =  new SoftwareSerial( A1, A0 );
+    _bluetoothSerial->begin( speed );
+    _flagRec = false;
+    _bufRec = "";
+    _delaySendStatus = DELAYSEND_STATUS;
+    _prevDelaySendStatus = 0 ;    
+    //_bluetoothSerial.begin( speed );
     _prevChar = 0;
     _trameNum=0;
     
 }
 
 void V13BT::update(int mode, int etat, int lastRec){ 
-    String trame;
+    //String trame;
     trame.reserve(40);
     if ( millis() - _prevDelaySendStatus > _delaySendStatus ){
         _prevDelaySendStatus = millis();
@@ -91,10 +97,12 @@ void V13BT::update(int mode, int etat, int lastRec){
         // ou flagRec = false;
 
     //if ( _bluetoothSerial->available() ){
-    if ( !_flagRec && _bluetoothSerial.available() ){
+    //if ( !_flagRec && _bluetoothSerial.available() ){
+    if ( !_flagRec && _bluetoothSerial->available() ){
         //char c = _bluetoothSerial->read();
         
-        char c = _bluetoothSerial.read();
+        //char c = _bluetoothSerial.read();
+        char c = _bluetoothSerial->read();
         if ( c !=  '\n' && c != 0xA ){
             _bufRec += String(c);
             //sp( "char recu : "); spl( _bufRec );
@@ -127,5 +135,6 @@ boolean V13BT::getRec(String& buffRecu ){
 }
 
 void V13BT::echoTrame(String trame){
-    _bluetoothSerial.println( trame);
+    //_bluetoothSerial.println( trame);
+    _bluetoothSerial->println( trame);
 }

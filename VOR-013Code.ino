@@ -53,7 +53,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    bluetoothChanel.begin(9600);
+    //bluetoothChanel.begin(9600);
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -83,6 +83,7 @@ void setup() {
 }
 
 String aEcrire="VOLAB";
+//String aEcrire="ABCD";
 int mode = MODE_ECRIT; // mode par defaut
 int etat = ETAT_ATTENTE;
 int recState = NOREC;
@@ -96,19 +97,19 @@ void loop(){
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
-        
-        bluetoothChanel.update(mode, etat, recState);  
+        /*
+        //bluetoothChanel.update(mode, etat, recState);  
         if ( bluetoothChanel.getRec( recTrame )){
             //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
-            recState = NOREC;
+            //recState = NOREC;
             //toto = 3;
         } 
-        
+        */
     }
     led.stop();
     //bluetoothChanel.end();
-    delete( bluetoothChanel );
+    //delete( &bluetoothChanel );
     delay(1000);
     
     //Ecriture du texte
