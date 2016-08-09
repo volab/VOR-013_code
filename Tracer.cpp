@@ -226,28 +226,30 @@ void Tracer::traceBuffer(){
 // ou nombre de commandes
 // renseigne le membre prive : _bufferCommandes[30][2];
 int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
-    String fileName = fileNameConstructor( sousDir, fileNameBase );
-    dspl( fileName );
-    String chaineCmd = ""; //chaine des commandes
+    //String fileName = fileNameConstructor( sousDir, fileNameBase );
+    _fileName = fileNameConstructor( sousDir, fileNameBase );
+    dspl( _fileName );
+    //String chaineCmd = ""; //chaine des commandes
+    _chaineCmd = ""; //chaine des commandes
     //--------------------------------------------------------------------------
     // debut debug function read chaineCmd et surtout conversion ASCII to enum
-    _myFile = SD.open(fileName, FILE_READ);
+    _myFile = SD.open(_fileName, FILE_READ);
     byte octetlu;
     while (_myFile.available()) {
         octetlu = _myFile.read();
-        chaineCmd.concat((char)octetlu);
+        _chaineCmd.concat((char)octetlu);
     }
     _myFile.close();
     //sp(F("chaine lue : ")); spl( chaineCmd ) ;
     int offset1 = 0;
     int offset2 = 0;
-    int pos1 = chaineCmd.indexOf('{', offset1);
+    int pos1 = _chaineCmd.indexOf('{', offset1);
     _nbrCommandes = 0;
     while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
-        //chaineCmd est conserve intacte
-        //parcours de chaineCmd avec offset1 et 2
-        int pos2 = chaineCmd.indexOf('}', offset2);
-        String sousChaine = chaineCmd.substring(pos1+1, pos2);
+        //_chaineCmd est conserve intacte
+        //parcours de _chaineCmd avec offset1 et 2
+        int pos2 = _chaineCmd.indexOf('}', offset2);
+        String sousChaine = _chaineCmd.substring(pos1+1, pos2);
         offset1 = pos1+2;
         offset2 = pos2+1;
         // recherche de la sous-chaine commande
@@ -258,7 +260,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
         //sp(F(" - Parametre = "));spl(parametre);
         _bufferCommandes[_nbrCommandes][1] = parametre;
-        pos1 = chaineCmd.indexOf('{', offset1);
+        pos1 = _chaineCmd.indexOf('{', offset1);
         _nbrCommandes += 1 ;
     }
 

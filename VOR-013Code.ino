@@ -27,13 +27,14 @@
 ** 3 LED
 ** 2 Switch
 */
+#include "bluetooth.h"
 #include <SPI.h>
 #include <SD.h>
 #include "Tracer.h"
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
-#include "bluetooth.h"
+
 
 
 #define LED 3
@@ -53,7 +54,7 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-    //bluetoothChanel.begin(9600);
+    bluetoothChanel.begin(9600);
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -98,7 +99,7 @@ void loop(){
     while( digitalRead( SWITCH )){
         led.update();
         /*
-        //bluetoothChanel.update(mode, etat, recState);  
+        bluetoothChanel.update(mode, etat, recState);  
         if ( bluetoothChanel.getRec( recTrame )){
             //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);

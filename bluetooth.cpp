@@ -26,8 +26,9 @@ V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
 void V13BT::begin(int speed){
     //Syntaxe possible en utilisant les pointeurs et pas l'init dans la
     // liste d'intialisation du constructeur
-    _bluetoothSerial =  new SoftwareSerial( A1, A0 );
-    _bluetoothSerial->begin( speed );
+    //_bluetoothSerial =  new SoftwareSerial( A1, A0 );
+    _bluetoothSerial =  new SoftwareSerial( 8, 9 );
+    //_bluetoothSerial->begin( speed );
     _flagRec = false;
     _bufRec = "";
     _delaySendStatus = DELAYSEND_STATUS;
@@ -98,6 +99,7 @@ void V13BT::update(int mode, int etat, int lastRec){
 
     //if ( _bluetoothSerial->available() ){
     //if ( !_flagRec && _bluetoothSerial.available() ){
+        /*
     if ( !_flagRec && _bluetoothSerial->available() ){
         //char c = _bluetoothSerial->read();
         
@@ -114,6 +116,7 @@ void V13BT::update(int mode, int etat, int lastRec){
         // last char rec pour tester les CR, LF
         // CR ou LF seul
     } 
+    */
     
 }
 
@@ -136,5 +139,5 @@ boolean V13BT::getRec(String& buffRecu ){
 
 void V13BT::echoTrame(String trame){
     //_bluetoothSerial.println( trame);
-    _bluetoothSerial->println( trame);
+    //_bluetoothSerial->println( trame);
 }
