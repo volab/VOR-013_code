@@ -107,7 +107,8 @@ void loop(){
         
     }
     led.stop();
-    bluetoothChanel.end();
+    //bluetoothChanel.end();
+    delete( bluetoothChanel );
     delay(1000);
     
     //Ecriture du texte

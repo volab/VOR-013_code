@@ -12,6 +12,7 @@
 #ifdef DEBUG
 #define dsp(X) sp(X)
 #define dspl(X) spl(X)
+#define dsplh(X) spl(x, HEX)
 #else
 #define dsp(X)
 #define dspl(X)
