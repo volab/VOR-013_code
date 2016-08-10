@@ -281,6 +281,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         _nbrCommandes += 1 ;
     }
     //dspl( _nbrCommandes );
+    dspl( freeRam() );
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }

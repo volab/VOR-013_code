@@ -27,7 +27,7 @@
 ** 3 LED
 ** 2 Switch
 */
-#include "bluetooth.h"
+//#include "bluetooth.h"
 //#include <SPI.h>
 //#include <SD.h>
 //#include "Tracer.h"
@@ -45,6 +45,8 @@
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
 //V13BT bluetoothChanel ;
+#define RESERVEMEM 100
+uint8_t reserveMemoire[RESERVEMEM];
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
@@ -54,7 +56,9 @@ void setup() {
     dspl("setup : " __DATE__ " @ " __TIME__);
 
     pinMode( SWITCH, INPUT_PULLUP);
-
+    for (int i = 0 ; i< RESERVEMEM; i++){
+        reserveMemoire[i] = i;
+    }
 
     /* sample code à concerver
     led1.begin( 13, 10, 500 );
@@ -99,8 +103,9 @@ void loop(){
     led.begin( LED, 200, 200);
     while( digitalRead( SWITCH )){
         led.update();
-        /*
-        bluetoothChanel.update(mode, etat, recState);  
+        
+        //bluetoothChanel.update(mode, etat, recState);
+/*        
         if ( bluetoothChanel.getRec( recTrame )){
             //bluetoothChanel.echoTrame( recTrame );
             //sp("quelques chose a dire ? "); spl( recTrame);
