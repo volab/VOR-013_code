@@ -13,24 +13,27 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //Constructor
-Tracer::Tracer():
+Tracer::Tracer()/*:
+
     _L_stepperPins( { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,\
-                            (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 })
+                            (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 })*/
 {
 
     // _L_stepperPins[4] =  { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,
                             // (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 };
     //_R_stepperPins[4] = { RSTEPPERPIN0, RSTEPPERPIN1, RSTEPPERPIN2, RSTEPPERPIN3 };
+    /*
     _R_stepperPins[0] = (int)RSTEPPERPIN0;
     _R_stepperPins[1] = (int)RSTEPPERPIN1;
     _R_stepperPins[2] = (int)RSTEPPERPIN2;
     _R_stepperPins[3] = (int)RSTEPPERPIN3;
-
+    */
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 // void Tracer::tracerBegin(){
 void Tracer::begin(){
+    /*
     for(int pin=0; pin<4; pin++){
         pinMode(_L_stepperPins[pin], OUTPUT);
         digitalWrite(_L_stepperPins[pin], LOW);
@@ -41,12 +44,14 @@ void Tracer::begin(){
     _upDownServopin = UDSERVOPIN; //quel est l'utilite de ce membre ?
     _penServo.attach(_upDownServopin);
     penup();
+    */
     _chaineCmd.reserve(300);
 }
 
 
 void Tracer::tracerDebug(){
 #ifdef DEBUG
+/*
     spl("into the tracer class");
     for (int i = 0; i < 4; i++){
         dsp( F("L_stepper_pin")); dsp(i);dsp(" = ");dspl(_L_stepperPins[i]);
@@ -55,10 +60,12 @@ void Tracer::tracerDebug(){
         dsp( F("R_stepper_pin")); dsp(i);dsp(" = ");dspl(_R_stepperPins[i]);
     }
     dsp(F("steps for 10 mm = "));dspl( step(10));
+    */
 #endif
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+/*
 void Tracer::penup(){
     _penServo.attach(_upDownServopin);
     delay(250);
@@ -154,10 +161,11 @@ void Tracer::done(){ // unlock stepper to save battery
         delay(DELAYTIME);
     }
 }
-
+*/
 //----------------------------------------------------------------------------------------------------------------------
 //protected
 void Tracer::trace(int cmd, int param){
+    /*
     static int offsetRcpt = 0;
     switch (cmd){
         default: // PU:
@@ -182,6 +190,7 @@ void Tracer::trace(int cmd, int param){
         left( (float) param );
         break;          
     }
+    */
 }
 
 int Tracer::fromEnumCommande( String commande){
@@ -211,13 +220,13 @@ void Tracer::printBufferCmd(){
     }
 }
 
-
+/*
 void Tracer::traceBuffer(){
         for(int x=0; x < _nbrCommandes; x++){
         trace( _bufferCommandes[x][0], _bufferCommandes[x][1] );
     }
 }
-
+*/
 int freeRam () {
     extern int __heap_start, *__brkval; 
     int v; 

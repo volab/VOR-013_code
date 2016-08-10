@@ -46,19 +46,19 @@ class Tracer{
     protected:
     void trace(int cmd, int param);
     int readBufferFromSD( String sousDir, String fileNameBase );
-    void traceBuffer();
+    //void traceBuffer();
     
     private:
     int _upDownServopin; //quel est l'utilite de ce membre ?
     Servo _penServo;
-    int _L_stepperPins[4];
-    int _R_stepperPins[4];
+    //int _L_stepperPins[4];
+    //int _R_stepperPins[4];
     int _nbrCommandes ;
     byte _bufferCommandes[NBRCMDMAX][2];
     File _myFile;
     String _fileName;
     String _chaineCmd;
-    
+    /*
     const int _fwd_mask[4][4] =  {{1, 0, 1, 0},
                                 {0, 1, 1, 0},
                                 {0, 1, 0, 1},
@@ -67,16 +67,17 @@ class Tracer{
                                 {0, 1, 0, 1},
                                 {0, 1, 1, 0},
                                 {1, 0, 1, 0}};
+                                */
     
     //methodes privees
-    void penup();
-    void pendown();    
-    int step(float distance);
-    void forward(float distance);
-    void backward(float distance);
-    void right(float degrees);
-    void left(float degrees);
-    void done();
+    // void penup();
+    // void pendown();    
+    // int step(float distance);
+    // void forward(float distance);
+    // void backward(float distance);
+    // void right(float degrees);
+    // void left(float degrees);
+    // void done();
 
     int readBufferFromSD();
 

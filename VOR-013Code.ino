@@ -13,9 +13,9 @@
 // Programmation orientée objet
 
 
-#include <Servo.h>
+//#include <Servo.h>
 //#include "letters.h"
-#define TABLETTERMAXLIGN 25
+//#define TABLETTERMAXLIGN 25
 /*
 ** MOSI - pin 11
 ** MISO - pin 12
@@ -44,7 +44,7 @@
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
-V13BT bluetoothChanel ;
+//V13BT bluetoothChanel ;
 
 //----------------------------------------------------------------------------------------------------------------------
 void setup() {
