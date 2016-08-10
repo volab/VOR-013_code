@@ -31,10 +31,13 @@
 //#include <SPI.h>
 //#include <SD.h>
 //#include "Tracer.h"
+
+
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
 
+#include "bluetooth.h"
 
 
 #define LED 3
@@ -44,8 +47,8 @@
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
-//V13BT bluetoothChanel ;
-#define RESERVEMEM 100
+V13BT bluetoothChanel ;
+#define RESERVEMEM 5
 uint8_t reserveMemoire[RESERVEMEM];
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +81,7 @@ void setup() {
         }
     }
     lettreur.begin();
-    //bluetoothChanel.begin(9600);
+    bluetoothChanel.begin(9600);
 /*    
 #ifdef DEBUG    
     while(1);

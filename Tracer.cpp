@@ -262,6 +262,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
     int pos1 = _chaineCmd.indexOf('{', offset1);
     _nbrCommandes = 0;
     dspl( freeRam() );
+    dspl( _chaineCmd.length() );
     while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
         //_chaineCmd est conserve intacte
         //parcours de _chaineCmd avec offset1 et 2
@@ -281,7 +282,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         _nbrCommandes += 1 ;
     }
     //dspl( _nbrCommandes );
-    dspl( freeRam() );
+    //dspl( freeRam() );
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }
