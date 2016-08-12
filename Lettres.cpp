@@ -20,7 +20,11 @@ void Lettres::traceLettre(char c){
     _carac = toupper( c );
     //sp(F("Trace lettre : ")); spl(_carac);
     //spl( freeRam ());
-    int nbCmd = readBufferFromSD( "letters", String( _carac) );
+    //int nbCmd = readBufferFromSD( "lettersHex", String( _carac) );
+    /* Extrait Arduino lib SD description:
+    ...and SDHC cards. It uses short 8.3 names for files. The file names...
+    */
+    int nbCmd = readBufferFromSD( "lhex", String( _carac) );
     //dspl( nbCmd );
 #ifdef DEBUG
     printBufferCmd();

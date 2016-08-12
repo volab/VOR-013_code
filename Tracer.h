@@ -57,7 +57,7 @@ class Tracer{
     byte _bufferCommandes[NBRCMDMAX][2];
     File _myFile;
     String _fileName;
-    String _chaineCmd;
+    //String _chaineCmd;
     /*
     const int _fwd_mask[4][4] =  {{1, 0, 1, 0},
                                 {0, 1, 1, 0},

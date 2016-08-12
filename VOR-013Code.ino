@@ -47,7 +47,7 @@
 
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
-V13BT bluetoothChanel ;
+//V13BT bluetoothChanel ;
 #define RESERVEMEM 5
 uint8_t reserveMemoire[RESERVEMEM];
 
@@ -81,7 +81,7 @@ void setup() {
         }
     }
     lettreur.begin();
-    bluetoothChanel.begin(9600);
+    //bluetoothChanel.begin(9600);
 /*    
 #ifdef DEBUG    
     while(1);

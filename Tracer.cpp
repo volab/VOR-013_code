@@ -45,7 +45,8 @@ void Tracer::begin(){
     _penServo.attach(_upDownServopin);
     penup();
     */
-    _chaineCmd.reserve(300);
+    
+    //_chaineCmd.reserve(300);
 }
 
 
@@ -207,17 +208,20 @@ int Tracer::fromEnumCommande( String commande){
 // le lettre est convertie en majuscules
 // pas de verification !
 String Tracer::fileNameConstructor( String sousDir, String fileNameBase ){
-    return String(sousDir)+"/"+fileNameBase+String(".txt");
+    //return String(sousDir)+"/"+fileNameBase+String(".txt");
+    return String(sousDir)+"/"+fileNameBase+String(".hex");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 // methode : pour debug
 void Tracer::printBufferCmd(){
     sp(F("Contenu du buffer de commandes :")); spl( _nbrCommandes );
+    
     for (int i = 0; i< _nbrCommandes; i++){
         sp( F("cmd : ") );sp( _bufferCommandes[i][0] );
         sp( F(", ") );spl(_bufferCommandes[i][1]);
     }
+    
 }
 
 /*
@@ -246,16 +250,22 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
     _fileName = fileNameConstructor( sousDir, fileNameBase );
     dspl( _fileName );
     //String chaineCmd = ""; //chaine des commandes
-    _chaineCmd = ""; //chaine des commandes
+    //_chaineCmd = ""; //chaine des commandes
     //--------------------------------------------------------------------------
     // debut debug function read chaineCmd et surtout conversion ASCII to enum
+    if ( !SD.exists( "letters" ) ) spl( "inconnu" );
     _myFile = SD.open(_fileName, FILE_READ);
-    byte octetlu;
+    //byte octetlu;
+    _nbrCommandes = 0;
     while (_myFile.available()) {
-        octetlu = _myFile.read();
-        _chaineCmd.concat((char)octetlu);
+        //octetlu = _myFile.read();
+        _bufferCommandes[_nbrCommandes][0] = _myFile.read();
+        _bufferCommandes[_nbrCommandes][1] = _myFile.read();
+        //_chaineCmd.concat((char)octetlu);
+        _nbrCommandes++;
     }
     _myFile.close();
+    /*
     sp(F("chaine lue : ")); spl( _chaineCmd ) ;
     int offset1 = 0;
     int offset2 = 0;
@@ -282,7 +292,8 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
         _nbrCommandes += 1 ;
     }
     //dspl( _nbrCommandes );
-    //dspl( freeRam() );
+    */
+    dspl( freeRam() );
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }
