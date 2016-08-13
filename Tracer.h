@@ -41,9 +41,10 @@ class Tracer{
     void begin();
     void tracerDebug();
     void printBufferCmd();
+    void trace(int cmd, int param);
     
     protected:
-    void trace(int cmd, int param);
+    
     int readBufferFromSD( String sousDir, String fileNameBase );
     void traceBuffer();
     

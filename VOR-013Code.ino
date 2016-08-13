@@ -81,13 +81,16 @@ void loop(){
     robot.setState( ETAT_WORK );
     //Ecriture du texte
     for (int i = 0; i< robot.get_aEcrire().length(); i++){
-        //Serial.println(  aEcrire.charAt(i) );
         lettreur.traceLettre( robot.get_aEcrire().charAt(i) );
         bluetoothChanel.update( robot.buildStateTrame() );
     }
-
+    //dégagement
+    lettreur.trace(3, 90); //TR,90
+    lettreur.trace(2, 110); //FW,110
+    
+    robot.setState( ETAT_FINI );
     //done();      // releases stepper motor
-    while(1);    // wait for reset
+    while(1) bluetoothChanel.update( robot.buildStateTrame() );    // wait for reset
 }
 
 
