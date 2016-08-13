@@ -9,13 +9,11 @@
 #ifndef V13BT_H
 #define V13BT_H
 
-
 #define DELAYSEND_STATUS 5000 //ms
 #define DELAYTIMEOUTCONNEXION 20 //en seconde
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include "debugSerialPort.h"
-
 
 class V13BT{
 
@@ -31,17 +29,13 @@ class V13BT{
     boolean _flagBTconnecte;
     long _timeoutConnexion;
     
-
     public:
     V13BT();
     void begin(int speed);
-    //void update(int mode, int etat, int lastRec);
     void update( String trameEtat ); //update : emet et recoit
     boolean getFlagRec();
     boolean getRec(String& buffRecu ); //si chaine recu alors vrai
     void echoTrame(String trame);
-
-    
 };
 
 #endif

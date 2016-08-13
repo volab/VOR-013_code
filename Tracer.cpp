@@ -9,7 +9,6 @@
 
 #include "Tracer.h"
 
-
 int freeRam () {
     extern int __heap_start, *__brkval; 
     int v; 
@@ -22,10 +21,7 @@ Tracer::Tracer():
     _L_stepperPins( { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,\
                             (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 })
 {
-
-    // _L_stepperPins[4] =  { (int)LSTEPPERPIN0, (int)LSTEPPERPIN1,
-                            // (int)LSTEPPERPIN2, (int)LSTEPPERPIN3 };
-    //_R_stepperPins[4] = { RSTEPPERPIN0, RSTEPPERPIN1, RSTEPPERPIN2, RSTEPPERPIN3 };
+    // 2 syntaxes possibles : dans la liste d'init ou  dans le corps
     _R_stepperPins[0] = (int)RSTEPPERPIN0;
     _R_stepperPins[1] = (int)RSTEPPERPIN1;
     _R_stepperPins[2] = (int)RSTEPPERPIN2;
@@ -65,6 +61,7 @@ void Tracer::tracerDebug(){
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+// Méthodes de bas niveaux pour le pilotage des moteurs pas à pas
 void Tracer::penup(){
     _penServo.attach(_upDownServopin);
     delay(20);
@@ -82,15 +79,12 @@ void Tracer::pendown(){
 }
 
 int Tracer::step(float distance){
-    //int steps = distance * steps_rev / (wheel_dia * 3.1412); //24.61
     int steps = distance * STEPREV / (WHEELDIA * 3.1412); //24.61
     return steps;  
 }
 
-
 void Tracer::forward(float distance){
     int steps = step(distance);
-    //Serial.print("forward : ");Serial.println(distance);
     for(int step=0; step<steps; step++){
         for(int mask=0; mask<4; mask++){
             for(int pin=0; pin<4; pin++){
@@ -115,11 +109,8 @@ void Tracer::backward(float distance){
     }
 }
 
-
 void Tracer::right(float degrees){
     float rotation = degrees / 360.0;
-    //Serial.print("right : ");Serial.println(degrees);
-    // float distance = wheel_base * 3.1412 * rotation;
     float distance = WHEELBASE * 3.1412 * rotation;
     int steps = step(distance);
     for(int step=0; step<steps; step++){
@@ -133,11 +124,8 @@ void Tracer::right(float degrees){
     }   
 }
 
-
 void Tracer::left(float degrees){
     float rotation = degrees / 360.0;
-    //Serial.print("left : ");Serial.println(degrees);
-    //float distance = wheel_base * 3.1412 * rotation;
     float distance = WHEELBASE * 3.1412 * rotation;
     int steps = step(distance);
     for(int step=0; step<steps; step++){
@@ -176,7 +164,7 @@ void Tracer::trace(int cmd, int param){
         forward( (float) param );
         break;
         case TR:
-        //correction déviation droite
+        //correction déviation droite déterminée de manière empirique
         offsetRcpt += param;
         if (offsetRcpt >= 180 ){
             offsetRcpt = 0;
@@ -190,20 +178,13 @@ void Tracer::trace(int cmd, int param){
     }
 }
 
-int Tracer::fromEnumCommande( String commande){
-    if (commande == "PD") return PD;
-    if (commande == "PU") return PU;
-    if (commande == "FW") return FW;
-    if (commande == "TR") return TR;
-    if (commande == "TL") return TL;  
-}
-
 //----------------------------------------------------------------------------------------------------------------------
 // methode : filenameContructor
 // cree le nom de fichier pour acceder a la lettre
 // le lettre est convertie en majuscules
 // pas de verification !
 String Tracer::fileNameConstructor( String sousDir, String fileNameBase ){
+    fileNameBase.toUpperCase();
     return String(sousDir)+"/"+fileNameBase+String(".hex");
 }
 
@@ -248,4 +229,4 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
     else return 0;
 }
 
-// Tracer mytracer;
+// That's all folks

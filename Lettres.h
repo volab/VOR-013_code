@@ -16,8 +16,6 @@
 // http://www.bruno-garcia.net/www/Cours/heritage.html#syntaxe
 class Lettres : public Tracer {
     public:
-    // Lettres( );
-    //void setLettre( char c ){ _carac = c; };
     void traceLettre( char c );
  
     private:

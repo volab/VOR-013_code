@@ -1,5 +1,9 @@
-
-
+// Projet VOR-013 Vor Marley the drawing Robots
+// Major Lee
+// CC-0
+// Juillet 2016
+//----------------------------------------------------------------------------------------------------------------------
+// permet de conserver l'état du robot et d'effectuer les tâches commune.
 
 #include <Arduino.h>
 #include "VOR13.h"

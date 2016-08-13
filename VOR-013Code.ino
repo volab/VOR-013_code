@@ -11,36 +11,22 @@
 // Changement de broche du L_stepper validé 8/7/16
 // reprise intégration SD carte
 // Programmation orientée objet
+// integration bluetooth débordement de la pile !!!!
+// a nécessité de changer de philo.
 
 
 #include <Servo.h>
+
 #define TABLETTERMAXLIGN 25
-/*
-** MOSI - pin 11
-** MISO - pin 12
-** CLK - pin 13
-** CS - pin 10
-** 9 
-** 8 servoPen
-** 4,5,6,7 steper right
-** 3 LED
-** 2 Switch
-*/
-// #include <SPI.h>
-// #include <SD.h>
-// #include "Tracer.h"
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
 #include "bluetooth.h"
 
-
 #define LED 3
 #define SWITCH 2
 
-
-
-VOR13 robot;
+VOR13 robot; //to keep the robot state (ben oui un peu d'anglais !)
 Lettres lettreur; //ie traceur de lettre
 Flasher led;
 V13BT bluetoothChanel ;
@@ -62,9 +48,8 @@ void setup() {
     }
     */
 
-    
     //------------------------------------------------------------------------------------------------------------------
-    // sabordage en cas d'échec ! avec LED clignotante
+    // sabordage en cas d'échec ! avec LED flash rapide
     if (!SD.begin(10)) {
         Serial.println(F("initialization failed!"));
         led.begin( LED, 20, 100 );
@@ -72,14 +57,7 @@ void setup() {
             led.update();
         }
     }
-    lettreur.begin();
-/*    
-#ifdef DEBUG    
-    while(1);
-#endif
-*/
-    delay(1000);
-    
+    lettreur.begin();   
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -90,7 +68,6 @@ void loop(){
     led.begin( LED, 300, 300);
     boolean go = false;
     while(!go ){
-    //while( digitalRead( SWITCH )){
         led.update();
         bluetoothChanel.update( robot.buildStateTrame() );
         if ( bluetoothChanel.getRec( recTrame )){
@@ -100,7 +77,7 @@ void loop(){
         go = !digitalRead( SWITCH ) | robot.go();
     }
     led.stop();
-    delay(1000);
+    delay(500);
     robot.setState( ETAT_WORK );
     //Ecriture du texte
     for (int i = 0; i< robot.get_aEcrire().length(); i++){

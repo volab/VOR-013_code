@@ -38,7 +38,6 @@
 class Tracer{
     public:
     Tracer();
-    // void tracerBegin();
     void begin();
     void tracerDebug();
     void printBufferCmd();
@@ -77,15 +76,8 @@ class Tracer{
     void done();
 
     int readBufferFromSD();
-
-    //String fileNameConstructor( );
     String fileNameConstructor( String sousDir, String fileNameBase );
-    int fromEnumCommande( String commande);
-    
-    
-    
-    
+   
 };
 
-// extern Tracer mytracer;
 #endif

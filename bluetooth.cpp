@@ -21,7 +21,6 @@ V13BT::V13BT(): _bluetoothSerial( A1, A0 ){
     
 }
 
-
 void V13BT::begin(int speed){
     //Syntaxe possible en utilisant les pointeurs et pas l'init dans la
     // liste d'intialisation du constructeur
@@ -31,10 +30,12 @@ void V13BT::begin(int speed){
     _prevChar = 0;
     _trameNum=0;
     _flagBTconnecte = false;
-    _timeoutConnexion = 0;
-    
+    _timeoutConnexion = 0;  
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+// cette methode est unpeu la bonne a tout faire
+// elle emet la trame et la recoit
 //void V13BT::update(int mode, int etat, int lastRec){
 void V13BT::update( String trame ){
     //*********************EMISSION*************************************************************************************
@@ -51,8 +52,7 @@ void V13BT::update( String trame ){
         while ( _bluetoothSerial.available() ) _bluetoothSerial.read(); //flush buffer
         _prevChar = 0;
     }
-    
-    
+
     //*********************test Mode Connecte***************************************************************************
     if ( _flagRec && _bufRec == "syncVOR13" ){
         _flagBTconnecte = true;
@@ -78,9 +78,6 @@ void V13BT::update( String trame ){
         dspl("Mode dec");
     }
 }
-
-
-
 
 boolean V13BT::getFlagRec(){
     return _flagRec;
