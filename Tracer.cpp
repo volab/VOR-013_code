@@ -10,6 +10,11 @@
 #include "Tracer.h"
 
 
+int freeRam () {
+    extern int __heap_start, *__brkval; 
+    int v; 
+    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //Constructor
@@ -46,6 +51,7 @@ void Tracer::begin(){
 
 void Tracer::tracerDebug(){
 #ifdef DEBUG
+/*
     spl("into the tracer class");
     for (int i = 0; i < 4; i++){
         dsp( F("L_stepper_pin")); dsp(i);dsp(" = ");dspl(_L_stepperPins[i]);
@@ -54,6 +60,7 @@ void Tracer::tracerDebug(){
         dsp( F("R_stepper_pin")); dsp(i);dsp(" = ");dspl(_R_stepperPins[i]);
     }
     dsp(F("steps for 10 mm = "));dspl( step(10));
+    */
 #endif
 }
 
@@ -197,16 +204,16 @@ int Tracer::fromEnumCommande( String commande){
 // le lettre est convertie en majuscules
 // pas de verification !
 String Tracer::fileNameConstructor( String sousDir, String fileNameBase ){
-    return String(sousDir)+"/"+fileNameBase+String(".txt");
+    return String(sousDir)+"/"+fileNameBase+String(".hex");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 // methode : pour debug
 void Tracer::printBufferCmd(){
-    spl(F("Contenu du buffer de commandes :"));
+    dsp(F("Contenu du buffer de commandes :")); dspl( _nbrCommandes );
     for (int i = 0; i< _nbrCommandes; i++){
-        sp( "cmd : ");sp( _bufferCommandes[i][0] );
-        sp( ", ");spl(_bufferCommandes[i][1]);
+        sp( F("cmd : ") );sp( _bufferCommandes[i][0] );
+        sp( F(", ") );spl(_bufferCommandes[i][1]);
     }
 }
 
@@ -228,40 +235,15 @@ void Tracer::traceBuffer(){
 int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
     String fileName = fileNameConstructor( sousDir, fileNameBase );
     dspl( fileName );
-    String chaineCmd = ""; //chaine des commandes
-    //--------------------------------------------------------------------------
-    // debut debug function read chaineCmd et surtout conversion ASCII to enum
     _myFile = SD.open(fileName, FILE_READ);
-    byte octetlu;
+    _nbrCommandes = 0;
     while (_myFile.available()) {
-        octetlu = _myFile.read();
-        chaineCmd.concat((char)octetlu);
+        _bufferCommandes[_nbrCommandes][0] = _myFile.read();
+        _bufferCommandes[_nbrCommandes][1] = _myFile.read();
+        _nbrCommandes++ ;
     }
     _myFile.close();
-    //sp(F("chaine lue : ")); spl( chaineCmd ) ;
-    int offset1 = 0;
-    int offset2 = 0;
-    int pos1 = chaineCmd.indexOf('{', offset1);
-    _nbrCommandes = 0;
-    while (pos1 != -1 && _nbrCommandes <= NBRCMDMAX){
-        //chaineCmd est conserve intacte
-        //parcours de chaineCmd avec offset1 et 2
-        int pos2 = chaineCmd.indexOf('}', offset2);
-        String sousChaine = chaineCmd.substring(pos1+1, pos2);
-        offset1 = pos1+2;
-        offset2 = pos2+1;
-        // recherche de la sous-chaine commande
-        int posVirgule = sousChaine.indexOf(',');
-        String commande = sousChaine.substring(0, posVirgule );
-        //cmdBuffer[nbrCommandes][0] = (byte)sousChaine.substring(0, sousChaine.indexOf(','))
-        _bufferCommandes[_nbrCommandes][0] = fromEnumCommande(commande);
-        byte parametre = (byte)sousChaine.substring( posVirgule + 1 ).toInt();
-        //sp(F(" - Parametre = "));spl(parametre);
-        _bufferCommandes[_nbrCommandes][1] = parametre;
-        pos1 = chaineCmd.indexOf('{', offset1);
-        _nbrCommandes += 1 ;
-    }
-
+    dspl( freeRam() );
     if ( _nbrCommandes <= NBRCMDMAX )return _nbrCommandes;
     else return 0;
 }

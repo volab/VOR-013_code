@@ -26,9 +26,9 @@
 ** 3 LED
 ** 2 Switch
 */
-#include <SPI.h>
-#include <SD.h>
-#include "Tracer.h"
+// #include <SPI.h>
+// #include <SD.h>
+// #include "Tracer.h"
 #include "Lettres.h"
 #include "Flasher.h"
 #include "VOR13.h"
@@ -38,11 +38,7 @@
 #define LED 3
 #define SWITCH 2
 
-int freeRam () {
-    extern int __heap_start, *__brkval; 
-    int v; 
-    return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
-}
+
 
 VOR13 robot;
 Lettres lettreur; //ie traceur de lettre
@@ -71,7 +67,7 @@ void setup() {
     // sabordage en cas d'échec ! avec LED clignotante
     if (!SD.begin(10)) {
         Serial.println(F("initialization failed!"));
-        led.begin( LED, 20, 200 );
+        led.begin( LED, 20, 100 );
         while (1){
             led.update();
         }
@@ -91,7 +87,7 @@ void loop(){
     String recTrame ="";
     
     // attente appui sur le bouton poussoir
-    led.begin( LED, 200, 200);
+    led.begin( LED, 300, 300);
     boolean go = false;
     while(!go ){
     //while( digitalRead( SWITCH )){
