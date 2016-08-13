@@ -249,8 +249,7 @@ int Tracer::readBufferFromSD( String sousDir, String fileNameBase ){
     //String fileName = fileNameConstructor( sousDir, fileNameBase );
     _fileName = fileNameConstructor( sousDir, fileNameBase );
     dspl( _fileName );
-    //String chaineCmd = ""; //chaine des commandes
-    //_chaineCmd = ""; //chaine des commandes
+
     //--------------------------------------------------------------------------
     // debut debug function read chaineCmd et surtout conversion ASCII to enum
     if ( !SD.exists( "letters" ) ) spl( "inconnu" );
