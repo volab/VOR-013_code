@@ -17,6 +17,7 @@
 class Lettres : public Tracer {
     public:
     void traceLettre( char c );
+    void dessine( String aDessiner );
  
     private:
     char _carac;

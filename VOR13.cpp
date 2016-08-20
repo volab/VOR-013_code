@@ -76,6 +76,7 @@ void VOR13::interpreteTrame( String trame ){
         if ( trame.startsWith("D")){
             _mode = MODE_DESSINE;
             //aDessinner =  trame.substring(2);
+            _aEcrire = trame.substring(2); // attention on réatulise la variable pour un autre usage
             //verifier si le fichier exist
             //sinon => unknow file => retour mode ecrit
             // dessine reste a implementer
@@ -83,7 +84,7 @@ void VOR13::interpreteTrame( String trame ){
         } else if ( trame.startsWith("E") ){
             _mode = MODE_ECRIT;
             _aEcrire = trame.substring(2);
-            sp("-");SERIALDEBUG.print( _aEcrire.charAt(_aEcrire.length()-1 ), HEX );spl("-");
+            //sp("-");SERIALDEBUG.print( _aEcrire.charAt(_aEcrire.length()-1 ), HEX );spl("-");
             _recState = LASTREC_MODETEXTE;
         }
     } else {

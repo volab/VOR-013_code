@@ -21,6 +21,10 @@ void Lettres::traceLettre(char c){
     //--------------------------------------------------------------------------
 }
 
+void Lettres::dessine( String aDessiner ){
+    int nbCmd = readBufferFromSD( "dessins", aDessiner);
+    traceBuffer();
+}
 
 
 

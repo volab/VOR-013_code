@@ -80,13 +80,18 @@ void loop(){
     delay(500);
     robot.setState( ETAT_WORK );
     //Ecriture du texte
-    for (int i = 0; i< robot.get_aEcrire().length(); i++){
-        lettreur.traceLettre( robot.get_aEcrire().charAt(i) );
-        bluetoothChanel.update( robot.buildStateTrame() );
+    if ( robot.getMode() == MODE_ECRIT ){
+        for (int i = 0; i< robot.get_aEcrire().length(); i++){
+            lettreur.traceLettre( robot.get_aEcrire().charAt(i) );
+            bluetoothChanel.update( robot.buildStateTrame() );
+        }
+        //dégagement
+        lettreur.trace(3, 90); //TR,90
+        lettreur.trace(2, 110); //FW,110
+    } else { //mode dessin
+        lettreur.dessine( robot.get_aDessiner() );
     }
-    //dégagement
-    lettreur.trace(3, 90); //TR,90
-    lettreur.trace(2, 110); //FW,110
+    //else
     
     robot.setState( ETAT_FINI );
     //done();      // releases stepper motor
