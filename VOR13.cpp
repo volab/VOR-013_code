@@ -52,7 +52,7 @@ String VOR13::buildStateTrame(){
         trame += "recu : " + _aEcrire ;
         break;
         case LASTREC_MODEDESSIN:
-        trame += "recu mode dessin et " ; // + aDessiner
+        trame += "recu mode dessin et " + _aEcrire ; // + aDessiner
         break;
         case LASTREC_MODETEXTE:
         trame += "recu mode texte et " + _aEcrire ;
