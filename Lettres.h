@@ -18,6 +18,7 @@ class Lettres : public Tracer {
     public:
     void traceLettre( char c );
     void dessine( String aDessiner );
+    void degage(int angle, int distance);
  
     private:
     char _carac;

@@ -86,12 +86,13 @@ void loop(){
             bluetoothChanel.update( robot.buildStateTrame() );
         }
         //dégagement
-        lettreur.trace(3, 90); //TR,90
-        lettreur.trace(2, 110); //FW,110
+        lettreur.degage(90, 110);
     } else { //mode dessin
         lettreur.dessine( robot.get_aDessiner() );
+        //dégagement
+        lettreur.degage(90, 160);
     }
-    //else
+
     
     robot.setState( ETAT_FINI );
     //done();      // releases stepper motor

@@ -31,6 +31,11 @@ void Lettres::dessine( String aDessiner ){
 #endif
 }
 
+void Lettres::degage(int angle, int distance){
+        trace(3, angle ); //TR,90
+        trace(2, distance ); //FW,110
+}
+
 
 
 
